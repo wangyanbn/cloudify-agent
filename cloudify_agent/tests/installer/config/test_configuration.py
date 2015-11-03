@@ -54,6 +54,7 @@ class TestConfiguration(BaseTest):
         agent_dir = os.path.join(basedir, 'test_deployment')
         envdir = os.path.join(agent_dir, 'env')
         workdir = os.path.join(agent_dir, 'work')
+        # This test needs to be adapted to security settings
         expected = {
             'agent_dir': agent_dir,
             'process_management':
@@ -61,7 +62,8 @@ class TestConfiguration(BaseTest):
             'basedir': basedir,
             'name': 'test_deployment',
             'manager_ip': 'localhost',
-            'manager_port': 8101,
+            'manager_port': 80,
+            'manager_protocol': 'http',
             'queue': 'test_deployment',
             'envdir': envdir,
             'user': user,
@@ -76,6 +78,7 @@ class TestConfiguration(BaseTest):
             'system_python': 'python',
             'remote_execution': True,
             'broker_get_settings_from_manager': True,
+            'security_enabled': None,
         }
         if os.name == 'posix':
             distro = platform.dist()[0].lower()

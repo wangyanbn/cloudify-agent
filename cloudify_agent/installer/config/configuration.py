@@ -31,6 +31,12 @@ from cloudify_agent.installer.config.attributes import raise_missing_attribute
 from cloudify_agent.installer.config.attributes import raise_missing_attributes
 
 
+DEFAULT_REST_PORT = 80
+SECURED_REST_PORT = 443
+DEFAULT_REST_PROTOCOL = 'http'
+SECURED_REST_PROTOCOL = 'https'
+
+
 def prepare_connection(cloudify_agent):
     connection_attributes(cloudify_agent)
 
@@ -164,6 +170,29 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
     if not cloudify_agent.get('manager_ip'):
         # by default, the manager ip will be set by an environment variable
         cloudify_agent['manager_ip'] = get_manager_ip()
+
+    cloudify_agent['security_enabled'] = ctx.security_context.security_enabled
+    if ctx.security_context.security_enabled and not \
+            (cloudify_agent.get('manager_username') and
+                cloudify_agent.get('manager_password')):
+        raise exceptions.AgentInstallerConfigurationError(
+            'Agent username and password must be set when manager '
+            'security is enabled')
+
+    manager_port = DEFAULT_REST_PORT
+    manager_protocol = DEFAULT_REST_PROTOCOL
+    if ctx.security_context.security_enabled and \
+            ctx.security_context.ssl_enabled:
+        manager_port = SECURED_REST_PORT
+        manager_protocol = SECURED_REST_PROTOCOL
+        cloudify_agent['verify_certificate'] = \
+            ctx.security_context.verify_ssl_certificate
+        # what about the local_manager_cert_path? should it be in the security
+        # context as well? should it be set here in any way?
+        cloudify_agent['local_manager_cert_path'] = \
+            ctx.security_context.local_manager_cert_path
+    cloudify_agent['manager_port'] = manager_port
+    cloudify_agent['manager_protocol'] = manager_protocol
 
 
 def directory_attributes(cloudify_agent):

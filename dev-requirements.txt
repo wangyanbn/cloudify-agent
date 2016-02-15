@@ -1,4 +1,4 @@
-https://github.com/cloudify-cosmo/cloudify-rest-client/archive/master.zip
+https://github.com/cloudify-cosmo/cloudify-rest-client/archive/CFY-4863-install-plugins.zip
 https://github.com/cloudify-cosmo/cloudify-plugins-common/archive/master.zip
 https://github.com/cloudify-cosmo/cloudify-script-plugin/archive/master.zip
 # The Diamond plugin is not included as a dependency in the setup.py since it breaks

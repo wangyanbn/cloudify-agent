@@ -142,6 +142,11 @@ def cfy_agent_attributes(cloudify_agent):
 
 def _cfy_agent_attributes_no_defaults(cloudify_agent):
 
+    with open('/tmp/agent_config.log', 'a') as agent_log:
+        agent_log.write('starting _cfy_agent_attributes_no_defaults, '
+                        'ctx.security_context is: {0}\n'.
+                        format(ctx.security_context))
+
     if not cloudify_agent.get('process_management'):
         cloudify_agent['process_management'] = {}
 
@@ -171,28 +176,28 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
         # by default, the manager ip will be set by an environment variable
         cloudify_agent['manager_ip'] = get_manager_ip()
 
-    cloudify_agent['security_enabled'] = ctx.security_context.security_enabled
-    if ctx.security_context.security_enabled and not \
-            (cloudify_agent.get('manager_username') and
-                cloudify_agent.get('manager_password')):
-        raise exceptions.AgentInstallerConfigurationError(
-            'Agent username and password must be set when manager '
-            'security is enabled')
+    cloudify_agent['security_enabled'] = ctx.security_context['security_enabled']
+    cloudify_agent['ssl_enabled'] = ctx.security_context['ssl_enabled']
+    cloudify_agent['verify_ssl_certificate'] = \
+        ctx.security_context['verify_ssl_certificate']
+    cloudify_agent['manager_username'] = ctx.security_context['cloudify_username']
+    cloudify_agent['manager_password'] = ctx.security_context['cloudify_password']
+    if cloudify_agent['security_enabled'] and \
+            cloudify_agent['ssl_enabled']:
+        cloudify_agent['manager_port'] = SECURED_REST_PORT
+        cloudify_agent['manager_protocol'] = SECURED_REST_PROTOCOL
+    else:
+        cloudify_agent['manager_port'] = DEFAULT_REST_PORT
+        cloudify_agent['manager_protocol'] = DEFAULT_REST_PROTOCOL
 
-    manager_port = DEFAULT_REST_PORT
-    manager_protocol = DEFAULT_REST_PROTOCOL
-    if ctx.security_context.security_enabled and \
-            ctx.security_context.ssl_enabled:
-        manager_port = SECURED_REST_PORT
-        manager_protocol = SECURED_REST_PROTOCOL
-        cloudify_agent['verify_certificate'] = \
-            ctx.security_context.verify_ssl_certificate
-        # what about the local_manager_cert_path? should it be in the security
+    with open('/tmp/agent_configuration.log', 'a') as configuration:
+        configuration.write('agent installer configured agent: {0}\n'.
+                            format(cloudify_agent))
+
+        # TODO: what about the local_manager_cert_path? should it be in the security
         # context as well? should it be set here in any way?
-        cloudify_agent['local_manager_cert_path'] = \
-            ctx.security_context.local_manager_cert_path
-    cloudify_agent['manager_port'] = manager_port
-    cloudify_agent['manager_protocol'] = manager_protocol
+        # cloudify_agent['local_manager_cert_path'] = \
+        #     ctx.security_context.local_manager_cert_path
 
 
 def directory_attributes(cloudify_agent):

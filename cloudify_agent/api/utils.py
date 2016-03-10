@@ -162,7 +162,8 @@ class _Internal(object):
     @staticmethod
     def get_broker_configuration(agent):
         with open('/tmp/agent_utils1.log', 'a') as agent_log1:
-            agent_log1.write('creating rest client with agent: {0}\n'.format(agent))
+            agent_log1.write('creating rest client with agent: {0}\n'.
+                             format(agent))
 
         client = get_rest_client(
             security_enabled=agent['security_enabled'],

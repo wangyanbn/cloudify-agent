@@ -176,12 +176,15 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
         # by default, the manager ip will be set by an environment variable
         cloudify_agent['manager_ip'] = get_manager_ip()
 
-    cloudify_agent['security_enabled'] = ctx.security_context['security_enabled']
+    cloudify_agent['security_enabled'] = \
+        ctx.security_context['security_enabled']
     cloudify_agent['ssl_enabled'] = ctx.security_context['ssl_enabled']
     cloudify_agent['verify_ssl_certificate'] = \
         ctx.security_context['verify_ssl_certificate']
-    cloudify_agent['manager_username'] = ctx.security_context['cloudify_username']
-    cloudify_agent['manager_password'] = ctx.security_context['cloudify_password']
+    cloudify_agent['manager_username'] = \
+        ctx.security_context['cloudify_username']
+    cloudify_agent['manager_password'] = \
+        ctx.security_context['cloudify_password']
     if cloudify_agent['security_enabled'] and \
             cloudify_agent['ssl_enabled']:
         cloudify_agent['manager_port'] = SECURED_REST_PORT
@@ -194,8 +197,9 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
         configuration.write('agent installer configured agent: {0}\n'.
                             format(cloudify_agent))
 
-        # TODO: what about the local_manager_cert_path? should it be in the security
-        # context as well? should it be set here in any way?
+        # TODO: what about the local_manager_cert_path?
+        # should it be in the security context as well?
+        # should it be set here in any way?
         # cloudify_agent['local_manager_cert_path'] = \
         #     ctx.security_context.local_manager_cert_path
 

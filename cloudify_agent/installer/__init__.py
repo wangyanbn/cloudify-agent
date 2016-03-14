@@ -172,14 +172,16 @@ class AgentInstaller(object):
             env.CLOUDIFY_DAEMON_USER: self.cloudify_agent.get('user'),
             env.CLOUDIFY_BROKER_IP: self.cloudify_agent.get('broker_ip'),
             env.CLOUDIFY_BROKER_PORT: self.cloudify_agent.get('broker_port'),
-            env.CLOUDIFY_MANAGER_PORT: self.cloudify_agent.get('manager_port'),
-            env.CLOUDIFY_MANAGER_PROTOCOL: self.cloudify_agent.get(
+            env.CLOUDIFY_REST_PORT: self.cloudify_agent.get('manager_port'),
+            env.CLOUDIFY_REST_PROTOCOL: self.cloudify_agent.get(
                 'manager_protocol'),
             env.CLOUDIFY_SECURITY_ENABLED:
                 self.cloudify_agent.get('security_enabled'),
-            env.CLOUDIFY_MANAGER_USERNAME:
+            env.CLOUDIFY_SSL_ENABLED:
+                self.cloudify_agent.get('ssl_enabled'),
+            env.CLOUDIFY_REST_USERNAME:
                 self.cloudify_agent.get('manager_username'),
-            env.CLOUDIFY_MANAGER_PASSWORD:
+            env.CLOUDIFY_REST_PASSWORD:
                 self.cloudify_agent.get('manager_password'),
             env.CLOUDIFY_VERIFY_MANAGER_CERTIFICATE:
                 self.cloudify_agent.get('verify_manager_certificate'),

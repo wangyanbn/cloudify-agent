@@ -38,24 +38,28 @@ from cloudify_agent.shell.decorators import handle_failures
               envvar=env.CLOUDIFY_DAEMON_PROCESS_MANAGEMENT)
 @click.option('--manager-port',
               help='The manager REST gateway port to connect to. [env {0}]'
-              .format(env.CLOUDIFY_MANAGER_PORT),
-              envvar=env.CLOUDIFY_MANAGER_PORT)
+              .format(env.CLOUDIFY_REST_PORT),
+              envvar=env.CLOUDIFY_REST_PORT)
 @click.option('--manager-protocol',
               help='The protocol to use when sending REST calls to the '
-                   'manager. [env {0}]'.format(env.CLOUDIFY_MANAGER_PROTOCOL),
-              envvar=env.CLOUDIFY_MANAGER_PROTOCOL)
+                   'manager. [env {0}]'.format(env.CLOUDIFY_REST_PROTOCOL),
+              envvar=env.CLOUDIFY_REST_PROTOCOL)
 @click.option('--security-enabled',
               help='True if REST service security is enabled, False otherwise.'
                    ' [env {0}]'.format(env.CLOUDIFY_SECURITY_ENABLED),
               envvar=env.CLOUDIFY_SECURITY_ENABLED)
+@click.option('--ssl-enabled',
+              help='True if REST service security supports SSL, False otherwise.'
+                   ' [env {0}]'.format(env.CLOUDIFY_SSL_ENABLED),
+              envvar=env.CLOUDIFY_SSL_ENABLED)
 @click.option('--manager-username',
               help='The username to use when sending REST calls to the '
-                   'manager. [env {0}]'.format(env.CLOUDIFY_MANAGER_USERNAME),
-              envvar=env.CLOUDIFY_MANAGER_USERNAME)
+                   'manager. [env {0}]'.format(env.CLOUDIFY_REST_USERNAME),
+              envvar=env.CLOUDIFY_REST_USERNAME)
 @click.option('--manager-password',
               help='The password to use when sending REST calls to the '
-                   'manager. [env {0}]'.format(env.CLOUDIFY_MANAGER_PASSWORD),
-              envvar=env.CLOUDIFY_MANAGER_PASSWORD)
+                   'manager. [env {0}]'.format(env.CLOUDIFY_REST_PASSWORD),
+              envvar=env.CLOUDIFY_REST_PASSWORD)
 @click.option('--verify-manager-certificate',
               help='True to verify the manager\' SSl certificate, False '
                    'otherwise. [env {0}]'.

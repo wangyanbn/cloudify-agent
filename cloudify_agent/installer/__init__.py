@@ -177,8 +177,6 @@ class AgentInstaller(object):
                 'manager_protocol'),
             env.CLOUDIFY_SECURITY_ENABLED:
                 self.cloudify_agent.get('security_enabled'),
-            env.CLOUDIFY_SSL_ENABLED:
-                self.cloudify_agent.get('ssl_enabled'),
             env.CLOUDIFY_REST_USERNAME:
                 self.cloudify_agent.get('manager_username'),
             env.CLOUDIFY_REST_PASSWORD:

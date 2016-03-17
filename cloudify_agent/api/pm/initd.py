@@ -138,7 +138,6 @@ class GenericLinuxDaemon(CronRespawnDaemon):
             manager_port=self.manager_port,
             manager_protocol=self.manager_protocol,
             security_enabled=self.security_enabled,
-            ssl_enabled=self.ssl_enabled,
             manager_username=self.manager_username,
             manager_password=self.manager_password,
             verify_manager_certificate=self.verify_manager_certificate,

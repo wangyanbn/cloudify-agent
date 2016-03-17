@@ -31,12 +31,6 @@ from cloudify_agent.installer.config.attributes import raise_missing_attribute
 from cloudify_agent.installer.config.attributes import raise_missing_attributes
 
 
-DEFAULT_REST_PORT = 80
-SECURED_REST_PORT = 443
-DEFAULT_REST_PROTOCOL = 'http'
-SECURED_REST_PROTOCOL = 'https'
-
-
 def prepare_connection(cloudify_agent):
     connection_attributes(cloudify_agent)
 
@@ -178,20 +172,14 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
 
     cloudify_agent['security_enabled'] = \
         ctx.security_context['security_enabled']
-    cloudify_agent['ssl_enabled'] = ctx.security_context['ssl_enabled']
-    cloudify_agent['verify_ssl_certificate'] = \
-        ctx.security_context['verify_ssl_certificate']
+    cloudify_agent['manager_port'] = ctx.security_context.manager_port
+    cloudify_agent['manager_protocol'] = ctx.security_context.manager_protocol
     cloudify_agent['manager_username'] = \
         ctx.security_context['cloudify_username']
     cloudify_agent['manager_password'] = \
         ctx.security_context['cloudify_password']
-    if cloudify_agent['security_enabled'] and \
-            cloudify_agent['ssl_enabled']:
-        cloudify_agent['manager_port'] = SECURED_REST_PORT
-        cloudify_agent['manager_protocol'] = SECURED_REST_PROTOCOL
-    else:
-        cloudify_agent['manager_port'] = DEFAULT_REST_PORT
-        cloudify_agent['manager_protocol'] = DEFAULT_REST_PROTOCOL
+    cloudify_agent['verify_ssl_certificate'] = \
+        ctx.security_context['verify_ssl_certificate']
 
     with open('/tmp/agent_configuration.log', 'a') as configuration:
         configuration.write('agent installer configured agent: {0}\n'.

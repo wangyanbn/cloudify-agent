@@ -118,10 +118,6 @@ class Daemon(object):
 
         True if REST security is enabled, False otherwise
 
-    ``ssl_enabled``:
-
-        True if SSL communication with the server is enabled, False otherwise
-
     ``manager_username``:
 
         the username to use in REST call. No default.
@@ -247,7 +243,6 @@ class Daemon(object):
         self.manager_protocol = params.get(
             'manager_protocol') or defaults.MANAGER_PROTOCOL
         self.security_enabled = params.get('security_enabled', False)
-        self.ssl_enabled = params.get('ssl_enabled', False)
         self.manager_username = params.get('manager_username')
         self.manager_password = params.get('manager_password')
         self.verify_manager_certificate = params.get(

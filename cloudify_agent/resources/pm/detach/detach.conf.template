@@ -8,7 +8,6 @@ export MANAGEMENT_IP={{ manager_ip }}
 export MANAGER_REST_PORT={{ manager_port }}
 export MANAGER_REST_PROTOCOL={{ manager_protocol }}
 export SECURITY_ENABLED={{ security_enabled }}
-export SSL_ENABLED={{ ssl_enabled }}
 export CLOUDIFY_USERNAME={{ manager_username }}
 export CLOUDIFY_PASSWORD={{ manager_password }}
 export VERIFY_CERTIFICATE={{ verify_manager_certificate }}

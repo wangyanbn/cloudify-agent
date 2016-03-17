@@ -48,10 +48,6 @@ from cloudify_agent.shell.decorators import handle_failures
               help='True if REST service security is enabled, False otherwise.'
                    ' [env {0}]'.format(env.CLOUDIFY_SECURITY_ENABLED),
               envvar=env.CLOUDIFY_SECURITY_ENABLED)
-@click.option('--ssl-enabled',
-              help='True if REST service security supports SSL, False otherwise.'
-                   ' [env {0}]'.format(env.CLOUDIFY_SSL_ENABLED),
-              envvar=env.CLOUDIFY_SSL_ENABLED)
 @click.option('--manager-username',
               help='The username to use when sending REST calls to the '
                    'manager. [env {0}]'.format(env.CLOUDIFY_REST_USERNAME),

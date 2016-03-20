@@ -172,8 +172,8 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
 
     cloudify_agent['security_enabled'] = \
         ctx.security_context['security_enabled']
-    cloudify_agent['manager_port'] = ctx.security_context.manager_port
-    cloudify_agent['manager_protocol'] = ctx.security_context.manager_protocol
+    cloudify_agent['manager_port'] = ctx.security_context['manager_port']
+    cloudify_agent['manager_protocol'] = ctx.security_context['manager_protocol']
     cloudify_agent['manager_username'] = \
         ctx.security_context['cloudify_username']
     cloudify_agent['manager_password'] = \

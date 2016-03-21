@@ -298,6 +298,7 @@ class Daemon(object):
         return os.path.join(self.workdir, 'broker_config.json')
 
     def _create_celery_conf(self):
+        self._logger.info('Deploying celery configuration.')
         config = {
             'broker_ssl_enabled': self.broker_ssl_enabled,
             'broker_cert_path': self._get_broker_ssl_cert_path() or '',
@@ -403,6 +404,14 @@ class Daemon(object):
         finally:
             if celery_client:
                 celery_client.close()
+
+    def _deploy_ssl_certs(self):
+        # create manager ssl cert
+        self._logger.info('Deploying manager SSL cert (if defined).')
+        self._create_manager_ssl_cert()
+        # create broker ssl cert
+        self._logger.info('Deploying SSL cert (if defined).')
+        self._create_broker_ssl_cert()
 
     ########################################################################
     # the following methods must be implemented by the sub-classes as they

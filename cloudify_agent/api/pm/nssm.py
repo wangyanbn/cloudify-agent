@@ -118,11 +118,7 @@ class NonSuckingServiceManagerDaemon(Daemon):
         self._logger.info('Running configuration script')
         self._runner.run(self.config_path)
         self._logger.debug('Successfully executed configuration script')
-
-        # Add the celery config
-        self._logger.info('Deploying SSL cert (if defined).')
-        self._create_broker_ssl_cert()
-        self._logger.info('Deploying celery configuration.')
+        self._deploy_ssl_certs()
         self._create_celery_conf()
 
     def before_self_stop(self):

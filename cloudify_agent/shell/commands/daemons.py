@@ -48,6 +48,11 @@ from cloudify_agent.shell.decorators import handle_failures
               help='True if REST service security is enabled, False otherwise.'
                    ' [env {0}]'.format(env.CLOUDIFY_SECURITY_ENABLED),
               envvar=env.CLOUDIFY_SECURITY_ENABLED)
+@click.option('--ssl-enabled',
+              help='True if SSL is enabled, False otherwise.'
+              .format(env.CLOUDIFY_SSL_ENABLED),
+              default=False,
+              envvar=env.CLOUDIFY_SSL_ENABLED)
 @click.option('--manager-username',
               help='The username to use when sending REST calls to the '
                    'manager. [env {0}]'.format(env.CLOUDIFY_REST_USERNAME),
@@ -61,11 +66,13 @@ from cloudify_agent.shell.decorators import handle_failures
                    'otherwise. [env {0}]'.
               format(env.CLOUDIFY_VERIFY_MANAGER_CERTIFICATE),
               envvar=env.CLOUDIFY_VERIFY_MANAGER_CERTIFICATE)
-@click.option('--local-manager-cert-path',
-              help='The path to a local copy of the manager\'s public '
-                   'certificate. [env {0}]'.
-              format(env.CLOUDIFY_LOCAL_MANAGER_CERT_PATH),
-              envvar=env.CLOUDIFY_LOCAL_MANAGER_CERT_PATH)
+@click.option('--ssl-cert',
+              help='The path to the SSL public cert to use.'
+                   'Only used when ssl is enabled [env {0}]'
+              .format(env.CLOUDIFY_SSL_CERT),
+              default=None,
+              type=click.Path(exists=True, readable=True, file_okay=True),
+              envvar=env.CLOUDIFY_SSL_CERT)
 @click.option('--name',
               help='The name of the daemon. [env {0}]'
               .format(env.CLOUDIFY_DAEMON_NAME),

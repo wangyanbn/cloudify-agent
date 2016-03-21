@@ -118,6 +118,10 @@ class Daemon(object):
 
         True if REST security is enabled, False otherwise
 
+    ``ssl_enabled``:
+
+        True if REST SSL is enabled, False otherwise
+
     ``manager_username``:
 
         the username to use in REST call. No default.
@@ -130,10 +134,11 @@ class Daemon(object):
 
         indicates if the verify the server's SSL certificate or not
 
-    ``local_manager_cert_path``:
+    ``manager_ssl_cert``:
 
-        The local (client) path to the manager's public SSL cert, if need for
-        verification
+        The SSL public certificate for the manager, if SSL is enabled.
+        This should be in PEM format and should be the string representation,
+        including the 'BEGIN CERTIFICATE' header and footer.
 
     ``min_workers``:
 
@@ -243,13 +248,13 @@ class Daemon(object):
         self.manager_protocol = params.get(
             'manager_protocol') or defaults.MANAGER_PROTOCOL
         self.security_enabled = params.get('security_enabled', False)
+        self.ssl_enabled = params.get('ssl_enabled', False)
         self.manager_username = params.get('manager_username')
         self.manager_password = params.get('manager_password')
         self.verify_manager_certificate = params.get(
             'verify_manager_certificate') or \
             defaults.VERIFY_MANAGER_CERTIFICATE
-        self.local_manager_cert_path = params.get(
-            'local_manager_cert_path') or defaults.LOCAL_MANAGER_CERT_PATH
+        self.manager_ssl_cert = params.get('manager_ssl_cert', '')
         self.queue = params.get(
             'queue') or self._get_queue_from_manager()
 
@@ -295,7 +300,7 @@ class Daemon(object):
     def _create_celery_conf(self):
         config = {
             'broker_ssl_enabled': self.broker_ssl_enabled,
-            'broker_cert_path': self._get_ssl_cert_path() or '',
+            'broker_cert_path': self._get_broker_ssl_cert_path() or '',
             'broker_username': self.broker_user,
             'broker_password': self.broker_pass,
             'broker_hostname': self.broker_ip,
@@ -339,7 +344,7 @@ class Daemon(object):
         else:
             return BROKER_PORT_NO_SSL
 
-    def _create_ssl_cert(self):
+    def _create_broker_ssl_cert(self):
         """
         Put the broker SSL cert into a file for AMQP clients to use.
         """
@@ -347,10 +352,10 @@ class Daemon(object):
         # will cause it not to be used
         if self.broker_ssl_cert:
             # TODO: Cert validation
-            with open(self._get_ssl_cert_path(), 'w') as cert_handle:
+            with open(self._get_broker_ssl_cert_path(), 'w') as cert_handle:
                 cert_handle.write(self.broker_ssl_cert)
 
-    def _get_ssl_cert_path(self):
+    def _get_broker_ssl_cert_path(self):
         """
         Determine what path the broker SSL cert should reside in.
         This is used both when determining where to create the cert, and in
@@ -363,11 +368,35 @@ class Daemon(object):
         else:
             return ''
 
+    def _create_manager_ssl_cert(self):
+        """
+        Put the manager (REST) SSL cert into a file for AMQP clients to use.
+        """
+        # Cert will be deployed even if SSL is disabled, but configuration
+        # will cause it not to be used
+        if self.manager_ssl_cert:
+            # TODO: Cert validation
+            with open(self._get_manager_ssl_cert_path(), 'w') as cert_handle:
+                cert_handle.write(self.manager_ssl_cert)
+
+    def _get_manager_ssl_cert_path(self):
+        """
+        Determine what path the manager (REST) SSL cert should reside in.
+        This is used both when determining where to create the cert, and in
+        determining where to read it from.
+        """
+        # Cert will be deployed even if SSL is disabled, but configuration
+        # will cause it not to be used
+        if self.manager_ssl_cert:
+            return os.path.join(self.workdir, 'manager.crt')
+        else:
+            return ''
+
     def _is_agent_registered(self):
         celery_client = utils.get_celery_client(
             broker_url=self.broker_url,
             ssl_enabled=self.broker_ssl_enabled,
-            ssl_cert_path=self._get_ssl_cert_path())
+            ssl_cert_path=self._get_broker_ssl_cert_path())
         try:
             self._logger.debug('Retrieving daemon registered tasks')
             return utils.get_agent_registered(self.name, celery_client)
@@ -629,7 +658,7 @@ class Daemon(object):
             amqp_user=self.broker_user,
             amqp_pass=self.broker_pass,
             ssl_enabled=self.broker_ssl_enabled,
-            ssl_cert_path=self._get_ssl_cert_path(),
+            ssl_cert_path=self._get_broker_ssl_cert_path(),
         )
 
         try:

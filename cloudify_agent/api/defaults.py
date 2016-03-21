@@ -21,7 +21,6 @@ BROKER_PORT = 5672
 MANAGER_PORT = 80
 MANAGER_PROTOCOL = 'http'
 VERIFY_MANAGER_CERTIFICATE = True
-LOCAL_MANAGER_CERT_PATH = '/root/cloudify/server.crt'
 MIN_WORKERS = 0
 MAX_WORKERS = 5
 BROKER_URL = 'amqp://{username}:{password}@{host}:{port}//'

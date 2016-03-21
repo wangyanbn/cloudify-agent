@@ -203,8 +203,8 @@ internal = _Internal()
 
 
 def get_celery_client(broker_url,
-                      ssl_enabled=False,
-                      ssl_cert_path=None):
+                      broker_ssl_enabled=False,
+                      broker_ssl_cert_path=None):
 
     # celery is imported locally since it's not used by any other method, and
     # we want this utils module to be usable even if celery is not available
@@ -214,11 +214,11 @@ def get_celery_client(broker_url,
                            backend=broker_url)
     celery_client.conf.update(
         CELERY_TASK_RESULT_EXPIRES=defaults.CELERY_TASK_RESULT_EXPIRES)
-    if ssl_enabled:
+    if broker_ssl_enabled:
         # import always?
         import ssl
         celery_client.conf.BROKER_USE_SSL = {
-            'ca_certs': ssl_cert_path,
+            'ca_certs': broker_ssl_cert_path,
             'cert_reqs': ssl.CERT_REQUIRED,
         }
     return celery_client

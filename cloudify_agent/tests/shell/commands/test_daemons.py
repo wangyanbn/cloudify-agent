@@ -63,11 +63,12 @@ class TestPatchedDaemonCommandLine(BaseCommandLineTestCase):
             broker_ssl_enabled=False,
             broker_get_settings_from_manager=False,
             security_enabled=None,
+            ssl_enabled=False,
             manager_protocol=None,
             manager_username=None,
             manager_password=None,
             verify_manager_certificate=None,
-            local_manager_cert_path=None
+            manager_ssl_cert=None
         )
 
         daemon = factory_new.return_value

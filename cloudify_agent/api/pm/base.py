@@ -746,7 +746,7 @@ class Daemon(object):
             cloudify_username=self.manager_username,
             cloudify_password=self.manager_password,
             verify_ssl_certificate=self.verify_manager_certificate or None,
-            ssl_cert_path=self.local_manager_cert_path or None
+            ssl_cert_path=self._get_manager_ssl_cert_path() or ''
         )
         node_instances = client.node_instances.list(
             deployment_id=self.deployment_id)

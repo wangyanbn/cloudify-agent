@@ -154,7 +154,6 @@ class DetachedDaemon(CronRespawnDaemon):
             manager_username=self.manager_username,
             manager_password=self.manager_password,
             verify_manager_certificate=self.verify_manager_certificate,
-            local_manager_cert_path=self.local_manager_cert_path,
             extra_env_path=self.extra_env_path,
             storage_dir=utils.internal.get_storage_directory(self.user),
             workdir=self.workdir,

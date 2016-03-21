@@ -172,8 +172,7 @@ class _Internal(object):
             manager_port=agent['manager_port'],
             cloudify_username=agent['manager_username'],
             cloudify_password=agent['manager_password'],
-            verify_ssl_certificate=agent.get('verify_manager_certificate'),
-            ssl_cert_path=agent.get('local_manager_cert_path'))
+            verify_ssl_certificate=agent.get('verify_manager_certificate'))
 
         bootstrap_context_dict = client.manager.get_context()
         bootstrap_context_dict = bootstrap_context_dict['context']['cloudify']

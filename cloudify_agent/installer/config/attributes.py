@@ -82,9 +82,6 @@ AGENT_ATTRIBUTES = {
     'verify_manager_certificate': {
         'group': 'cfy-agent'
     },
-    'local_manager_cert_path': {
-        'group': 'cfy-agent'
-    },
     'queue': {
         'group': 'cfy-agent'
     },

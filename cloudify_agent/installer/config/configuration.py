@@ -185,12 +185,6 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
         configuration.write('agent installer configured agent: {0}\n'.
                             format(cloudify_agent))
 
-        # TODO: what about the local_manager_cert_path?
-        # should it be in the security context as well?
-        # should it be set here in any way?
-        # cloudify_agent['local_manager_cert_path'] = \
-        #     ctx.security_context.local_manager_cert_path
-
 
 def directory_attributes(cloudify_agent):
     if not cloudify_agent.get('agent_dir'):

@@ -183,8 +183,6 @@ class AgentInstaller(object):
                 self.cloudify_agent.get('manager_password'),
             env.CLOUDIFY_VERIFY_MANAGER_CERTIFICATE:
                 self.cloudify_agent.get('verify_manager_certificate'),
-            env.CLOUDIFY_LOCAL_MANAGER_CERT_PATH:
-                self.cloudify_agent.get('local_manager_cert_path'),
             env.CLOUDIFY_DAEMON_MAX_WORKERS: self.cloudify_agent.get(
                 'max_workers'),
             env.CLOUDIFY_DAEMON_MIN_WORKERS: self.cloudify_agent.get(

@@ -11,7 +11,6 @@ export SECURITY_ENABLED={{ security_enabled }}
 export CLOUDIFY_USERNAME={{ manager_username }}
 export CLOUDIFY_PASSWORD={{ manager_password }}
 export VERIFY_CERTIFICATE={{ verify_manager_certificate }}
-export LOCAL_CERTIFICATE_PATH={{ local_manager_cert_path }}
 export MANAGER_FILE_SERVER_URL=http://{{ manager_ip }}:53229
 export MANAGER_FILE_SERVER_BLUEPRINTS_ROOT_URL=http://{{ manager_ip }}:53229/blueprints
 export VIRTUALENV={{ virtualenv_path }}

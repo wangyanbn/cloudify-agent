@@ -111,8 +111,7 @@ class TestPatchedDaemonCommandLine(BaseCommandLineTestCase):
             manager_protocol=None,
             manager_username=None,
             manager_password=None,
-            verify_manager_certificate=None,
-            local_manager_cert_path=None
+            verify_manager_certificate=None
         )
 
     def test_configure(self, *factory_methods):

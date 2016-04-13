@@ -321,6 +321,7 @@ class BaseDaemonProcessManagementTest(BaseDaemonLiveTestCase):
         daemon.start()
 
         expected = {
+            constants.MANAGER_INTERNAL_HOST_KEY: str(daemon.manager)
             constants.MANAGER_REST_HOST_KEY: str(daemon.manager_rest_host),
             constants.MANAGER_REST_PORT_KEY: str(daemon.manager_rest_port),
             constants.MANAGER_FILE_SERVER_URL_KEY:

@@ -23,6 +23,7 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 echo Setting service environment
 
 {{ nssm_path }} set {{ name }} AppEnvironmentExtra ^
+INTERNAL_MANAGER_HOST={{ internal_manager_host }} ^
 MANAGER_REST_HOST={{ manager_rest_host }} ^
 MANAGER_REST_PORT={{ manager_rest_port }} ^
 MANAGER_REST_PROTOCOL={{ manager_rest_protocol }} ^

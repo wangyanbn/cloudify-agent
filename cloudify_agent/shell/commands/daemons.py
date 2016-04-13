@@ -34,7 +34,7 @@ from cloudify_agent.shell.decorators import handle_failures
 @click.option('--internal-manager-host',
               help='The IP or host name of the manager, for file server and '
                    'broker redundancy [env {0}]'.format(
-                  env.CLOUDIFY_INTERNAL_MANAGER_HOST),
+                    env.CLOUDIFY_INTERNAL_MANAGER_HOST),
               required=True,
               envvar=env.CLOUDIFY_INTERNAL_MANAGER_HOST)
 @click.option('--manager-rest-host',

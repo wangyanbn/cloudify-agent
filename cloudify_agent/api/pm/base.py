@@ -40,9 +40,9 @@ class Daemon(object):
     will be available to any daemon without any configuration as instance
     attributes.
 
-    ``manager_rest_host``:
+    ``internal_manager_host``:
 
-        the ip address/host name of the manager, running the REST service. (Required)
+        the manager's IP or hostname exposed to internal components (Required)
 
     ``user``:
 
@@ -105,6 +105,10 @@ class Daemon(object):
 
         the password for the broker connection
         defaults to 'guest'
+
+    ``manager_rest_host``:
+
+        the ip address/host name of the manager, running the REST service. (Required)
 
     ``manager_rest_protocol``:
 
@@ -181,7 +185,8 @@ class Daemon(object):
     # add specific mandatory parameters for different implementations.
     # they will be validated upon daemon creation
     MANDATORY_PARAMS = [
-        'manager_rest_host'
+        'manager_rest_host',
+        'internal_manager_host'
     ]
 
     def __init__(self, logger=None, **params):
@@ -225,6 +230,7 @@ class Daemon(object):
 
         # Mandatory parameters
         self.validate_mandatory()
+        self.internal_manager_host = params['internal_manager_host']
         self.manager_rest_host = params['manager_rest_host']
 
         # Optional parameters

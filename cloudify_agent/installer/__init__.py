@@ -163,7 +163,7 @@ class AgentInstaller(object):
 
             # mandatory values calculated before the agent
             # is actually created
-            env.CLOUDIFY_REST_HOST: self.cloudify_agent['manager_rest_host'],
+            env.CLOUDIFY_INTERNAL_HOST: self.cloudify_agent['internal_manager_host'],
             env.CLOUDIFY_DAEMON_QUEUE: self.cloudify_agent['queue'],
             env.CLOUDIFY_DAEMON_NAME: self.cloudify_agent['name'],
 
@@ -177,6 +177,7 @@ class AgentInstaller(object):
                 'manager_rest_protocol'),
             env.CLOUDIFY_SECURITY_ENABLED:
                 self.cloudify_agent.get('security_enabled'),
+            env.CLOUDIFY_REST_HOST: self.cloudify_agent['manager_rest_host'],
             env.CLOUDIFY_REST_USERNAME:
                 self.cloudify_agent.get('manager_username'),
             env.CLOUDIFY_REST_PASSWORD:

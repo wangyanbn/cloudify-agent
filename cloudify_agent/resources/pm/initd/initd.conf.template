@@ -4,6 +4,7 @@
 export CLOUDIFY_DAEMON_NAME={{ name }}
 export CLOUDIFY_DAEMON_STORAGE_DIRECTORY={{ storage_dir }}
 export CLOUDIFY_DAEMON_USER={{ user }}
+export INTERNAL_MANAGER_HOST={{ internal_manager_host }}
 export MANAGER_REST_HOST={{ manager_rest_host }}
 export MANAGER_REST_PORT={{ manager_rest_port }}
 export MANAGER_REST_PROTOCOL={{ manager_rest_protocol }}

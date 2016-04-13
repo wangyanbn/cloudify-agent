@@ -23,15 +23,15 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 echo Setting service environment
 
 {{ nssm_path }} set {{ name }} AppEnvironmentExtra ^
-MANAGEMENT_IP={{ manager_ip }} ^
-MANAGER_REST_PORT={{ manager_port }} ^
-MANAGER_REST_PROTOCOL={{ manager_protocol }} ^
+MANAGER_REST_HOST={{ manager_rest_host }} ^
+MANAGER_REST_PORT={{ manager_rest_port }} ^
+MANAGER_REST_PROTOCOL={{ manager_rest_protocol }} ^
 MANAGER_SECURITY_ENABLED={{ security_enabled }} ^
 CLOUDIFY_USERNAME={{ manager_username }} ^
 CLOUDIFY_PASSWORD={{ manager_password }} ^
 VERIFY_CERTIFICATE={{ verify_manager_certificate }} ^
-MANAGER_FILE_SERVER_URL=http://{{ manager_ip }}:53229 ^
-MANAGER_FILE_SERVER_BLUEPRINTS_ROOT_URL=http://{{ manager_ip }}:53229/blueprints ^
+MANAGER_FILE_SERVER_URL=http://{{ internal_manager_host }}:53229 ^
+MANAGER_FILE_SERVER_BLUEPRINTS_ROOT_URL=http://{{ internal_manager_host }}:53229/blueprints ^
 CLOUDIFY_DAEMON_NAME={{ name }} ^
 CLOUDIFY_DAEMON_STORAGE_DIRECTORY={{ storage_dir }} ^
 CLOUDIFY_DAEMON_USER={{ user }} ^

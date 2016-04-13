@@ -36,12 +36,12 @@ class TestDaemonFactory(BaseShellTest):
             process_management='init.d',
             name=self.daemon_name,
             queue='queue',
-            manager_ip='127.0.0.1',
+            manager_rest_host='127.0.0.1',
             user='user',
             broker_url='127.0.0.1')
         self.assertEqual(self.daemon_name, daemon.name)
         self.assertEqual('queue', daemon.queue)
-        self.assertEqual('127.0.0.1', daemon.manager_ip)
+        self.assertEqual('127.0.0.1', daemon.manager_rest_host)
         self.assertEqual('amqp://guest:guest@127.0.0.1:5672//',
                          daemon.broker_url)
         self.assertEqual('user', daemon.user)
@@ -57,7 +57,7 @@ class TestDaemonFactory(BaseShellTest):
             process_management='init.d',
             name=self.daemon_name,
             queue='queue',
-            manager_ip='127.0.0.1',
+            manager_rest_host='127.0.0.1',
             user='user',
             broker_url='127.0.0.1')
 
@@ -66,7 +66,7 @@ class TestDaemonFactory(BaseShellTest):
         self.assertEqual('init.d', loaded.PROCESS_MANAGEMENT)
         self.assertEqual(self.daemon_name, loaded.name)
         self.assertEqual('queue', loaded.queue)
-        self.assertEqual('127.0.0.1', loaded.manager_ip)
+        self.assertEqual('127.0.0.1', loaded.manager_rest_host)
         self.assertEqual('user', loaded.user)
         self.assertEqual('amqp://guest:guest@127.0.0.1:5672//',
                          daemon.broker_url)
@@ -86,7 +86,7 @@ class TestDaemonFactory(BaseShellTest):
                 process_management='init.d',
                 name=name,
                 queue='queue',
-                manager_ip='127.0.0.1',
+                manager_rest_host='127.0.0.1',
                 user='user',
                 broker_url='127.0.0.1')
             self.factory.save(daemon)
@@ -110,7 +110,7 @@ class TestDaemonFactory(BaseShellTest):
             process_management='init.d',
             name=self.daemon_name,
             queue='queue',
-            manager_ip='127.0.0.1',
+            manager_rest_host='127.0.0.1',
             user='user',
             broker_url='127.0.0.1')
 
@@ -121,6 +121,6 @@ class TestDaemonFactory(BaseShellTest):
                           process_management='init.d',
                           name=self.daemon_name,
                           queue='queue',
-                          manager_ip='127.0.0.1',
+                          manager_rest_host='127.0.0.1',
                           user='user',
                           broker_url='127.0.0.1')

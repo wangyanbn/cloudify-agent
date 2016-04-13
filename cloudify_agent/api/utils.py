@@ -167,9 +167,9 @@ class _Internal(object):
 
         client = get_rest_client(
             security_enabled=agent['security_enabled'],
-            manager_ip=agent['manager_ip'],
-            manager_protocol=agent['manager_protocol'],
-            manager_port=agent['manager_port'],
+            manager_rest_host=agent['manager_rest_host'],
+            manager_rest_protocol=agent['manager_rest_protocol'],
+            manager_rest_port=agent['manager_rest_port'],
             cloudify_username=agent['manager_username'],
             cloudify_password=agent['manager_password'],
             verify_ssl_certificate=agent.get('verify_manager_certificate'))
@@ -178,9 +178,9 @@ class _Internal(object):
         bootstrap_context_dict = bootstrap_context_dict['context']['cloudify']
         bootstrap_context = BootstrapContext(bootstrap_context_dict)
         attributes = bootstrap_context.broker_config(
-            fallback_to_manager_ip=False)
+            fallback_to_internal_manager_host=False)
         if not attributes.get('broker_ip'):
-            attributes['broker_ip'] = agent['manager_ip']
+            attributes['broker_ip'] = agent['internal_manager_host']
         return attributes
 
     @staticmethod
@@ -189,7 +189,7 @@ class _Internal(object):
         if agent.get('broker_ip'):
             broker_ip = agent['broker_ip']
         else:
-            broker_ip = agent['manager_ip']
+            broker_ip = agent['internal_manager_host']
         broker_user = agent.get('broker_user', 'guest')
         broker_pass = agent.get('broker_pass', 'guest')
         return defaults.BROKER_URL.format(username=broker_user,
@@ -523,18 +523,18 @@ def json_loads(content):
 
 
 def get_rest_client(security_enabled,
-                    manager_ip,
-                    manager_protocol,
-                    manager_port,
+                    manager_rest_host,
+                    manager_rest_protocol,
+                    manager_rest_port,
                     cloudify_username=None,
                     cloudify_password=None,
                     verify_ssl_certificate=None,
                     ssl_cert_path=None):
 
     if not security_enabled:
-        rest_client = CloudifyClient(host=manager_ip,
-                                     protocol=manager_protocol,
-                                     port=manager_port)
+        rest_client = CloudifyClient(host=manager_rest_host,
+                                     protocol=manager_rest_protocol,
+                                     port=manager_rest_port)
     else:
         def _get_auth_header(username, password):
             header = None
@@ -551,9 +551,9 @@ def get_rest_client(security_enabled,
         if verify_ssl_certificate.lower() == 'false':
             trust_all = True
             cert_path = None
-        rest_client = CloudifyClient(host=manager_ip,
-                                     protocol=manager_protocol,
-                                     port=manager_port,
+        rest_client = CloudifyClient(host=manager_rest_host,
+                                     protocol=manager_rest_protocol,
+                                     port=manager_rest_port,
                                      headers=headers,
                                      trust_all=trust_all,
                                      cert=cert_path)

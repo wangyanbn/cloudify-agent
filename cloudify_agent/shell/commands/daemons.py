@@ -24,11 +24,6 @@ from cloudify_agent.shell.decorators import handle_failures
 
 
 @click.command(context_settings=dict(ignore_unknown_options=True))
-@click.option('--manager-ip',
-              help='The manager IP to connect to. [env {0}]'
-              .format(env.CLOUDIFY_MANAGER_IP),
-              required=True,
-              envvar=env.CLOUDIFY_MANAGER_IP)
 @click.option('--process-management',
               help='The process management system to use '
                    'when creating the daemon. [env {0}]'
@@ -36,11 +31,22 @@ from cloudify_agent.shell.decorators import handle_failures
               type=click.Choice(['init.d', 'nssm', 'detach']),
               required=True,
               envvar=env.CLOUDIFY_DAEMON_PROCESS_MANAGEMENT)
-@click.option('--manager-port',
+@click.option('--internal-manager-host',
+              help='The IP or host name of the manager, for file server and '
+                   'broker redundancy [env {0}]'.format(
+                  env.CLOUDIFY_INTERNAL_MANAGER_HOST),
+              required=True,
+              envvar=env.CLOUDIFY_INTERNAL_MANAGER_HOST)
+@click.option('--manager-rest-host',
+              help='The IP or host name of the REST service [env {0}]'
+              .format(env.CLOUDIFY_REST_HOST),
+              required=True,
+              envvar=env.CLOUDIFY_REST_HOST)
+@click.option('--manager-rest-port',
               help='The manager REST gateway port to connect to. [env {0}]'
               .format(env.CLOUDIFY_REST_PORT),
               envvar=env.CLOUDIFY_REST_PORT)
-@click.option('--manager-protocol',
+@click.option('--manager-rest-protocol',
               help='The protocol to use when sending REST calls to the '
                    'manager. [env {0}]'.format(env.CLOUDIFY_REST_PROTOCOL),
               envvar=env.CLOUDIFY_REST_PROTOCOL)
@@ -100,7 +106,7 @@ from cloudify_agent.shell.decorators import handle_failures
               envvar=env.CLOUDIFY_DAEMON_WORKDIR)
 @click.option('--broker-ip',
               help='The broker ip to connect to. '
-                   'If not specified, the --manager_ip '
+                   'If not specified, the --internal_manager_host '
                    'option will be used. [{0}]'
                    .format(env.CLOUDIFY_BROKER_IP),
               envvar=env.CLOUDIFY_BROKER_IP)

@@ -163,7 +163,7 @@ class AgentInstaller(object):
 
             # mandatory values calculated before the agent
             # is actually created
-            env.CLOUDIFY_MANAGER_IP: self.cloudify_agent['manager_ip'],
+            env.CLOUDIFY_REST_HOST: self.cloudify_agent['manager_rest_host'],
             env.CLOUDIFY_DAEMON_QUEUE: self.cloudify_agent['queue'],
             env.CLOUDIFY_DAEMON_NAME: self.cloudify_agent['name'],
 
@@ -172,9 +172,9 @@ class AgentInstaller(object):
             env.CLOUDIFY_DAEMON_USER: self.cloudify_agent.get('user'),
             env.CLOUDIFY_BROKER_IP: self.cloudify_agent.get('broker_ip'),
             env.CLOUDIFY_BROKER_PORT: self.cloudify_agent.get('broker_port'),
-            env.CLOUDIFY_REST_PORT: self.cloudify_agent.get('manager_port'),
+            env.CLOUDIFY_REST_PORT: self.cloudify_agent.get('manager_rest_port'),
             env.CLOUDIFY_REST_PROTOCOL: self.cloudify_agent.get(
-                'manager_protocol'),
+                'manager_rest_protocol'),
             env.CLOUDIFY_SECURITY_ENABLED:
                 self.cloudify_agent.get('security_enabled'),
             env.CLOUDIFY_REST_USERNAME:

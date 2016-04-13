@@ -194,7 +194,7 @@ class BaseDaemonProcessManagementTest(BaseDaemonLiveTestCase):
         name = utils.internal.generate_agent_name()
 
         params = {
-            'manager_ip': '127.0.0.1',
+            'manager_rest_host': '127.0.0.1',
             'user': self.username,
             'workdir': self.temp_folder,
             'logger': self.logger,
@@ -321,12 +321,12 @@ class BaseDaemonProcessManagementTest(BaseDaemonLiveTestCase):
         daemon.start()
 
         expected = {
-            constants.MANAGER_IP_KEY: str(daemon.manager_ip),
-            constants.MANAGER_REST_PORT_KEY: str(daemon.manager_port),
+            constants.MANAGER_REST_HOST_KEY: str(daemon.manager_rest_host),
+            constants.MANAGER_REST_PORT_KEY: str(daemon.manager_rest_port),
             constants.MANAGER_FILE_SERVER_URL_KEY:
-                'http://{0}:53229'.format(daemon.manager_ip),
+                'http://{0}:53229'.format(daemon.internal_manager_host),
             constants.MANAGER_FILE_SERVER_BLUEPRINTS_ROOT_URL_KEY:
-                'http://{0}:53229/blueprints'.format(daemon.manager_ip),
+                'http://{0}:53229/blueprints'.format(daemon.internal_manager_host),
             constants.CELERY_WORK_DIR_KEY: daemon.workdir,
             utils.internal.CLOUDIFY_DAEMON_STORAGE_DIRECTORY_KEY:
                 utils.internal.get_storage_directory(),

@@ -61,13 +61,13 @@ AGENT_ATTRIBUTES = {
     'windows': {
         'group': 'connection'
     },
-    'manager_ip': {
+    'manager_rest_host': {
         'group': 'cfy-agent'
     },
-    'manager_port': {
+    'manager_rest_port': {
         'group': 'cfy-agent'
     },
-    'manager_protocol': {
+    'manager_rest_protocol': {
         'group': 'cfy-agent'
     },
     'security_enabled': {

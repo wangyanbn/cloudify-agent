@@ -20,7 +20,6 @@ import platform
 from cloudify import ctx
 from cloudify import context
 from cloudify import constants
-from cloudify import utils as cloudify_utils
 
 from cloudify import utils as cloudify_utils
 from cloudify_agent.api import utils as agent_utils

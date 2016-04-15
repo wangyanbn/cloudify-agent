@@ -108,7 +108,8 @@ class Daemon(object):
 
     ``manager_rest_host``:
 
-        the ip address/host name of the manager, running the REST service. (Required)
+        the ip address/host name of the manager, running the
+        REST service. (Required)
 
     ``manager_rest_protocol``:
 

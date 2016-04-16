@@ -106,16 +106,16 @@ class Daemon(object):
         the password for the broker connection
         defaults to 'guest'
 
-    ``manager_rest_host``:
+    ``rest_host``:
 
         the ip address/host name of the manager, running the
         REST service. (Required)
 
-    ``manager_rest_protocol``:
+    ``rest_protocol``:
 
         the protocol to use in REST call. defaults to HTTP.
 
-    ``manager_rest_port``:
+    ``rest_port``:
 
         the manager REST gateway port to connect to. defaults to 80.
 
@@ -186,7 +186,7 @@ class Daemon(object):
     # add specific mandatory parameters for different implementations.
     # they will be validated upon daemon creation
     MANDATORY_PARAMS = [
-        'manager_rest_host',
+        'rest_host',
         'internal_manager_host'
     ]
 
@@ -232,7 +232,7 @@ class Daemon(object):
         # Mandatory parameters
         self.validate_mandatory()
         self.internal_manager_host = params['internal_manager_host']
-        self.manager_rest_host = params['manager_rest_host']
+        self.rest_host = params['rest_host']
 
         # Optional parameters
         self.validate_optional()
@@ -240,7 +240,7 @@ class Daemon(object):
             'name') or self._get_name_from_manager()
         self.user = params.get('user') or getpass.getuser()
         self.broker_ip = params.get(
-            'broker_ip') or self.manager_rest_host
+            'broker_ip') or self.rest_host
         self.broker_ssl_enabled = params.get('broker_ssl_enabled', False)
         self.broker_ssl_cert = params.get('broker_ssl_cert', '')
         # Port must be determined after SSL enabled has been set in order for
@@ -250,10 +250,10 @@ class Daemon(object):
         self.broker_pass = params.get('broker_pass', 'guest')
         self.host = params.get('host')
         self.deployment_id = params.get('deployment_id')
-        self.manager_rest_port = params.get(
-            'manager_rest_port') or defaults.MANAGER_REST_PORT
-        self.manager_rest_protocol = params.get(
-            'manager_rest_protocol') or defaults.MANAGER_REST_PROTOCOL
+        self.rest_port = params.get(
+            'rest_port') or defaults.REST_PORT
+        self.rest_protocol = params.get(
+            'rest_protocol') or defaults.REST_PROTOCOL
         self.security_enabled = params.get('security_enabled', False)
         self.ssl_enabled = params.get('ssl_enabled', False)
         self.manager_username = params.get('manager_username')
@@ -747,9 +747,9 @@ class Daemon(object):
     def _get_runtime_properties(self):
         client = utils.get_rest_client(
             security_enabled=self.security_enabled,
-            manager_rest_host=self.manager_rest_host,
-            manager_rest_protocol=self.manager_rest_protocol,
-            manager_rest_port=self.manager_rest_port,
+            rest_host=self.rest_host,
+            rest_protocol=self.rest_protocol,
+            rest_port=self.rest_port,
             cloudify_username=self.manager_username,
             cloudify_password=self.manager_password,
             verify_ssl_certificate=self.verify_manager_certificate or None,

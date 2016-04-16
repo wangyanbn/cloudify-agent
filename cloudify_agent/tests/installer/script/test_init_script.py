@@ -43,7 +43,7 @@ class BaseInitScriptTest(BaseTest):
             properties={'agent_config': {
                 'user': self.username,
                 'install_method': 'init_script',
-                'manager_rest_host': 'localhost',
+                'rest_host': 'localhost',
                 'windows': self.windows,
                 'basedir': self.temp_folder
             }})

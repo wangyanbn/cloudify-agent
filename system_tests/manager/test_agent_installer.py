@@ -238,7 +238,7 @@ def install_script(name, windows, user, manager_host):
             'user': user,
             'windows': windows,
             'install_method': 'provided',
-            'manager_rest_host': manager_host,
+            'rest_host': manager_host,
             'name': name
         }})
     try:

@@ -167,9 +167,9 @@ class _Internal(object):
 
         client = get_rest_client(
             security_enabled=agent['security_enabled'],
-            manager_rest_host=agent['manager_rest_host'],
-            manager_rest_protocol=agent['manager_rest_protocol'],
-            manager_rest_port=agent['manager_rest_port'],
+            rest_host=agent['rest_host'],
+            rest_protocol=agent['rest_protocol'],
+            rest_port=agent['rest_port'],
             cloudify_username=agent['manager_username'],
             cloudify_password=agent['manager_password'],
             verify_ssl_certificate=agent.get('verify_manager_certificate'))
@@ -523,18 +523,18 @@ def json_loads(content):
 
 
 def get_rest_client(security_enabled,
-                    manager_rest_host,
-                    manager_rest_protocol,
-                    manager_rest_port,
+                    rest_host,
+                    rest_protocol,
+                    rest_port,
                     cloudify_username=None,
                     cloudify_password=None,
                     verify_ssl_certificate=None,
                     ssl_cert_path=None):
 
     if not security_enabled:
-        rest_client = CloudifyClient(host=manager_rest_host,
-                                     protocol=manager_rest_protocol,
-                                     port=manager_rest_port)
+        rest_client = CloudifyClient(host=rest_host,
+                                     protocol=rest_protocol,
+                                     port=rest_port)
     else:
         def _get_auth_header(username, password):
             header = None
@@ -551,9 +551,9 @@ def get_rest_client(security_enabled,
         if verify_ssl_certificate.lower() == 'false':
             trust_all = True
             cert_path = None
-        rest_client = CloudifyClient(host=manager_rest_host,
-                                     protocol=manager_rest_protocol,
-                                     port=manager_rest_port,
+        rest_client = CloudifyClient(host=rest_host,
+                                     protocol=rest_protocol,
+                                     port=rest_port,
                                      headers=headers,
                                      trust_all=trust_all,
                                      cert=cert_path)

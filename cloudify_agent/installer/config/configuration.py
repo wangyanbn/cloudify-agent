@@ -164,17 +164,17 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
         # by default, the queue of the agent is the same as the name
         cloudify_agent['queue'] = cloudify_agent['name']
 
-    if not cloudify_agent.get('manager_rest_host'):
+    if not cloudify_agent.get('rest_host'):
         # by default, the manager ip will be set by an environment variable
-        cloudify_agent['manager_rest_host'] = \
+        cloudify_agent['rest_host'] = \
             cloudify_utils.get_manager_rest_service_host()
 
     cloudify_agent['security_enabled'] = \
         ctx.security_context['security_enabled']
-    cloudify_agent['manager_rest_port'] = \
-        ctx.security_context['manager_rest_port']
-    cloudify_agent['manager_rest_protocol'] = \
-        ctx.security_context['manager_rest_protocol']
+    cloudify_agent['rest_port'] = \
+        ctx.security_context['rest_port']
+    cloudify_agent['rest_protocol'] = \
+        ctx.security_context['rest_protocol']
     cloudify_agent['manager_username'] = \
         ctx.security_context['cloudify_username']
     cloudify_agent['manager_password'] = \

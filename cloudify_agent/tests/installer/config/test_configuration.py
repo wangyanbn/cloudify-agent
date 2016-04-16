@@ -31,12 +31,12 @@ class TestConfiguration(BaseTest):
     def setUp(self):
         super(TestConfiguration, self).setUp()
         os.environ[constants.MANAGER_FILE_SERVER_URL_KEY] = 'localhost'
-        os.environ[constants.MANAGER_REST_HOST_KEY] = 'localhost'
+        os.environ[constants.REST_HOST_KEY] = 'localhost'
         os.environ[constants.MANAGER_INTERNAL_HOST_KEY] = 'localhost'
 
     def tearDown(self):
         del os.environ[constants.MANAGER_FILE_SERVER_URL_KEY]
-        del os.environ[constants.MANAGER_REST_HOST_KEY]
+        del os.environ[constants.REST_HOST_KEY]
         del os.environ[constants.MANAGER_INTERNAL_HOST_KEY]
 
     @patch('cloudify_agent.installer.config.configuration.ctx',
@@ -63,9 +63,9 @@ class TestConfiguration(BaseTest):
                 {'name': 'init.d' if os.name == 'posix' else 'nssm'},
             'basedir': basedir,
             'name': 'test_deployment',
-            'manager_rest_host': 'localhost',
-            'manager_rest_port': 80,
-            'manager_rest_protocol': 'http',
+            'rest_host': 'localhost',
+            'rest_port': 80,
+            'rest_protocol': 'http',
             'queue': 'test_deployment',
             'envdir': envdir,
             'user': user,

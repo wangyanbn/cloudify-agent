@@ -43,7 +43,7 @@ from cloudify_agent.shell.decorators import handle_failures
               required=True,
               envvar=env.CLOUDIFY_REST_HOST)
 @click.option('--manager-rest-port',
-              help='The manager REST gateway port to connect to. [env {0}]'
+              help='The manager REST port to connect to. [env {0}]'
               .format(env.CLOUDIFY_REST_PORT),
               envvar=env.CLOUDIFY_REST_PORT)
 @click.option('--manager-rest-protocol',

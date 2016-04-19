@@ -37,7 +37,7 @@ AGENT_ATTRIBUTES = {
     'protocol': {
         'group': 'connection'
     },
-    'ip': {
+    'internal_manager_host': {
         'group': 'connection'
     },
     'key': {

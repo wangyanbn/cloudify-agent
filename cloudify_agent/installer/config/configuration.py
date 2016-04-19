@@ -164,8 +164,13 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
         # by default, the queue of the agent is the same as the name
         cloudify_agent['queue'] = cloudify_agent['name']
 
+    if not cloudify_agent.get('internal_manager_host'):
+        # by default, the manager host will be set by an environment variable
+        cloudify_agent['internal_manager_host'] = \
+            cloudify_utils.get_internal_manager_host()
+
     if not cloudify_agent.get('rest_host'):
-        # by default, the manager ip will be set by an environment variable
+        # by default, the rest host will be set by an environment variable
         cloudify_agent['rest_host'] = \
             cloudify_utils.get_manager_rest_service_host()
 

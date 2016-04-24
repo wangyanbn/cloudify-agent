@@ -139,11 +139,14 @@ class Daemon(object):
 
         indicates if the verify the server's SSL certificate or not
 
-    ``manager_ssl_cert``:
+    ``local_rest_cert_file``:
 
-        The SSL public certificate for the manager, if SSL is enabled.
-        This should be in PEM format and should be the string representation,
-        including the 'BEGIN CERTIFICATE' header and footer.
+        A path to a local copy of the manager's SSL certificate, to be used
+        for certificate verification if SSL is enabled.
+
+    ``rest_ssl_cert_content``:
+        The content of the REST SSL certificate, to be written to
+        local_rest_cert_file
 
     ``min_workers``:
 
@@ -261,7 +264,8 @@ class Daemon(object):
         self.verify_manager_certificate = params.get(
             'verify_manager_certificate') or \
             defaults.VERIFY_MANAGER_CERTIFICATE
-        self.manager_ssl_cert = params.get('manager_ssl_cert', '')
+        self.local_rest_cert_file = params.get('local_rest_cert_file', '')
+        self.rest_cert_content = params.get('rest_ssl_cert_content', '')
         self.queue = params.get(
             'queue') or self._get_queue_from_manager()
 
@@ -376,29 +380,15 @@ class Daemon(object):
         else:
             return ''
 
-    def _create_manager_ssl_cert(self):
+    def _create_rest_ssl_cert(self):
         """
-        Put the manager (REST) SSL cert into a file for AMQP clients to use.
+        put the REST SSL cert into a file for clients to use,
+        if local_rest_cert_file is set.
         """
-        # Cert will be deployed even if SSL is disabled, but configuration
-        # will cause it not to be used
-        if self.manager_ssl_cert:
+        if self.local_rest_cert_file:
             # TODO: Cert validation
-            with open(self._get_manager_ssl_cert_path(), 'w') as cert_handle:
-                cert_handle.write(self.manager_ssl_cert)
-
-    def _get_manager_ssl_cert_path(self):
-        """
-        Determine what path the manager (REST) SSL cert should reside in.
-        This is used both when determining where to create the cert, and in
-        determining where to read it from.
-        """
-        # Cert will be deployed even if SSL is disabled, but configuration
-        # will cause it not to be used
-        if self.manager_ssl_cert:
-            return os.path.join(self.workdir, 'manager.crt')
-        else:
-            return ''
+            with open(self.local_rest_cert_file(), 'w') as cert_handle:
+                cert_handle.write(self.local_rest_cert_content)
 
     def _is_agent_registered(self):
         celery_client = utils.get_celery_client(
@@ -414,8 +404,8 @@ class Daemon(object):
 
     def _deploy_ssl_certs(self):
         # create manager ssl cert
-        self._logger.info('Deploying manager SSL cert (if defined).')
-        self._create_manager_ssl_cert()
+        self._logger.info('Deploying REST SSL cert (if defined).')
+        self._create_rest_ssl_cert()
         # create broker ssl cert
         self._logger.info('Deploying SSL cert (if defined).')
         self._create_broker_ssl_cert()
@@ -752,8 +742,8 @@ class Daemon(object):
             rest_port=self.rest_port,
             cloudify_username=self.manager_username,
             cloudify_password=self.manager_password,
-            verify_ssl_certificate=self.verify_manager_certificate or None,
-            ssl_cert_path=self._get_manager_ssl_cert_path() or ''
+            verify_ssl_certificate=self.verify_manager_certificate or False,
+            ssl_cert_path=self.local_rest_cert_file or ''
         )
         node_instances = client.node_instances.list(
             deployment_id=self.deployment_id)

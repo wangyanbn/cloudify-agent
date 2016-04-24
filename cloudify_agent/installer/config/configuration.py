@@ -161,18 +161,28 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
         cloudify_agent['name'] = name
 
     if not cloudify_agent.get('queue'):
-        # by default, the queue of the agent is the same as the name
+        # by default, queue of the agent is the same as the name
         cloudify_agent['queue'] = cloudify_agent['name']
 
     if not cloudify_agent.get('internal_manager_host'):
-        # by default, the manager host will be set by an environment variable
+        # by default, manager host will be set by an environment variable
         cloudify_agent['internal_manager_host'] = \
             cloudify_utils.get_internal_manager_host()
 
     if not cloudify_agent.get('rest_host'):
-        # by default, the rest host will be set by an environment variable
+        # by default, rest host is set by an environment variable
         cloudify_agent['rest_host'] = \
             cloudify_utils.get_manager_rest_service_host()
+
+    if not cloudify_agent.get('local_rest_cert_file'):
+        # by default, local_rest_cert_file is set by an environment variable
+        cloudify_agent['local_rest_cert_file'] = \
+            cloudify_utils.get_local_rest_certificate()
+
+    if not cloudify_agent.get('rest_cert_content'):
+        # by default, rest_cert_content is set by an environment variable
+        cloudify_agent['rest_cert_content'] = \
+            cloudify_utils.get_rest_cert_content()
 
     cloudify_agent['security_enabled'] = \
         ctx.security_context['security_enabled']

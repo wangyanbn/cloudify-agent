@@ -72,13 +72,19 @@ from cloudify_agent.shell.decorators import handle_failures
                    'otherwise. [env {0}]'.
               format(env.CLOUDIFY_VERIFY_MANAGER_CERTIFICATE),
               envvar=env.CLOUDIFY_VERIFY_MANAGER_CERTIFICATE)
-@click.option('--ssl-cert',
-              help='The path to the SSL public cert to use.'
-                   'Only used when ssl is enabled [env {0}]'
-              .format(env.CLOUDIFY_SSL_CERT),
+@click.option('--ssl-cert-file',
+              help='The path to the SSL public cert to use during for cert '
+                   'verification. Only used when ssl is enabled [env {0}]'
+              .format(env.CLOUDIFY_LOCAL_REST_CERT_FILE),
               default=None,
               type=click.Path(exists=True, readable=True, file_okay=True),
-              envvar=env.CLOUDIFY_SSL_CERT)
+              envvar=env.CLOUDIFY_LOCAL_REST_CERT_FILE)
+@click.option('--ssl-cert-content',
+              help='The string content of the REST SSL certificate [env {0}]'
+              .format(env.CLOUDIFY_REST_CERT_CONTENT),
+              default=None,
+              type=click.Path(exists=True, readable=True, file_okay=True),
+              envvar=env.CLOUDIFY_REST_CERT_CONTENT)
 @click.option('--name',
               help='The name of the daemon. [env {0}]'
               .format(env.CLOUDIFY_DAEMON_NAME),

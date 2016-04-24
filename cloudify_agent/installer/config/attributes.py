@@ -82,6 +82,12 @@ AGENT_ATTRIBUTES = {
     'verify_manager_certificate': {
         'group': 'cfy-agent'
     },
+    'local_rest_cert_file': {
+        'group': 'cfy-agent'
+    },
+    'rest_cert_content': {
+        'group': 'cfy-agent'
+    },
     'queue': {
         'group': 'cfy-agent'
     },

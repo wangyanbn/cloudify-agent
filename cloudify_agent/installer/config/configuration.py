@@ -169,6 +169,8 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
         cloudify_agent['internal_manager_host'] = \
             cloudify_utils.get_internal_manager_host()
 
+    # TODO how to decide if a value is set via the security context or env var?
+    # if it could change per request it should be in the ctx, otherwise env?
     if not cloudify_agent.get('rest_host'):
         # by default, rest host is set by an environment variable
         cloudify_agent['rest_host'] = \

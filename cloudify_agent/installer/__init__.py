@@ -179,7 +179,7 @@ class AgentInstaller(object):
                 'rest_protocol'),
             env.CLOUDIFY_SECURITY_ENABLED:
                 self.cloudify_agent.get('security_enabled'),
-            env.CLOUDIFY_REST_HOST: self.cloudify_agent['rest_host'],
+            env.CLOUDIFY_REST_HOST: self.cloudify_agent.get('rest_host'),
             env.CLOUDIFY_REST_USERNAME:
                 self.cloudify_agent.get('manager_username'),
             env.CLOUDIFY_REST_PASSWORD:

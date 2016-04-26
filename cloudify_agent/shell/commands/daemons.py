@@ -54,11 +54,6 @@ from cloudify_agent.shell.decorators import handle_failures
               help='True if REST service security is enabled, False otherwise.'
                    ' [env {0}]'.format(env.CLOUDIFY_SECURITY_ENABLED),
               envvar=env.CLOUDIFY_SECURITY_ENABLED)
-@click.option('--ssl-enabled',
-              help='True if SSL is enabled, False otherwise.'
-              .format(env.CLOUDIFY_SSL_ENABLED),
-              default=False,
-              envvar=env.CLOUDIFY_SSL_ENABLED)
 @click.option('--manager-username',
               help='The username to use when sending REST calls to the '
                    'manager. [env {0}]'.format(env.CLOUDIFY_REST_USERNAME),
@@ -76,13 +71,11 @@ from cloudify_agent.shell.decorators import handle_failures
               help='The path to a local copy of the REST public cert, used for'
                    ' cert verification, if required [env {0}]'
               .format(env.CLOUDIFY_LOCAL_REST_CERT_FILE),
-              default=None,
               type=click.Path(exists=True, readable=True, file_okay=True),
               envvar=env.CLOUDIFY_LOCAL_REST_CERT_FILE)
 @click.option('--rest-cert-content',
               help='The string content of the REST SSL certificate [env {0}]'
               .format(env.CLOUDIFY_REST_CERT_CONTENT),
-              default=None,
               type=click.Path(exists=True, readable=True, file_okay=True),
               envvar=env.CLOUDIFY_REST_CERT_CONTENT)
 @click.option('--name',

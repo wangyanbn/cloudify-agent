@@ -259,8 +259,8 @@ class Daemon(object):
         self.verify_manager_certificate = params.get(
             'verify_manager_certificate') or \
             defaults.VERIFY_MANAGER_CERTIFICATE
-        self.local_rest_cert_file = params.get('local_rest_cert_file', '')
-        self.rest_cert_content = params.get('rest_ssl_cert_content', '')
+        self.local_rest_cert_file = params.get('local_rest_cert_file')
+        self.rest_cert_content = params.get('rest_ssl_cert_content')
         self.queue = params.get(
             'queue') or self._get_queue_from_manager()
 

@@ -172,7 +172,7 @@ class _Internal(object):
             rest_port=agent['rest_port'],
             cloudify_username=agent['manager_username'],
             cloudify_password=agent['manager_password'],
-            verify_ssl_certificate=agent.get('verify_manager_certificate'),
+            verify_manager_certificate=agent.get('verify_manager_certificate'),
             ssl_cert_path=agent.get('local_rest_cert_file'))
 
         bootstrap_context_dict = client.manager.get_context()
@@ -529,7 +529,7 @@ def get_rest_client(security_enabled,
                     rest_port,
                     cloudify_username=None,
                     cloudify_password=None,
-                    verify_ssl_certificate=None,
+                    verify_manager_certificate=None,
                     ssl_cert_path=None):
 
     if not security_enabled:
@@ -547,11 +547,13 @@ def get_rest_client(security_enabled,
 
         headers = _get_auth_header(cloudify_username,
                                    cloudify_password)
-        trust_all = False
-        cert_path = ssl_cert_path
-        if verify_ssl_certificate.lower() == 'false':
+        if verify_manager_certificate.lower() == 'false':
             trust_all = True
             cert_path = None
+        else:
+            trust_all = False
+            cert_path = ssl_cert_path
+
         rest_client = CloudifyClient(host=rest_host,
                                      protocol=rest_protocol,
                                      port=rest_port,

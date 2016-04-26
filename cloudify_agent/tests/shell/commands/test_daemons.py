@@ -63,7 +63,6 @@ class TestPatchedDaemonCommandLine(BaseCommandLineTestCase):
             broker_ssl_enabled=False,
             broker_get_settings_from_manager=False,
             security_enabled=None,
-            ssl_enabled=False,
             rest_protocol=None,
             manager_username=None,
             manager_password=None,

@@ -123,10 +123,6 @@ class Daemon(object):
 
         True if REST security is enabled, False otherwise
 
-    ``ssl_enabled``:
-
-        True if REST SSL is enabled, False otherwise
-
     ``manager_username``:
 
         the username to use in REST call. No default.
@@ -257,8 +253,7 @@ class Daemon(object):
             'rest_port') or defaults.REST_PORT
         self.rest_protocol = params.get(
             'rest_protocol') or defaults.REST_PROTOCOL
-        self.security_enabled = params.get('security_enabled', False)
-        self.ssl_enabled = params.get('ssl_enabled', False)
+        self.security_enabled = params.get('security_enabled')
         self.manager_username = params.get('manager_username')
         self.manager_password = params.get('manager_password')
         self.verify_manager_certificate = params.get(
@@ -742,7 +737,7 @@ class Daemon(object):
             rest_port=self.rest_port,
             cloudify_username=self.manager_username,
             cloudify_password=self.manager_password,
-            verify_ssl_certificate=self.verify_manager_certificate or False,
+            verify_manager_certificate=self.verify_manager_certificate,
             ssl_cert_path=self.local_rest_cert_file or ''
         )
         node_instances = client.node_instances.list(

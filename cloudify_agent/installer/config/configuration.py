@@ -196,8 +196,8 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
         ctx.security_context['cloudify_username']
     cloudify_agent['manager_password'] = \
         ctx.security_context['cloudify_password']
-    cloudify_agent['verify_ssl_certificate'] = \
-        ctx.security_context['verify_ssl_certificate']
+    cloudify_agent['verify_manager_certificate'] = \
+        ctx.security_context['verify_manager_certificate']
 
     with open('/tmp/agent_configuration.log', 'a') as configuration:
         configuration.write('agent installer configured agent: {0}\n'.

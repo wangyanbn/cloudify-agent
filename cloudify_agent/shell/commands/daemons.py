@@ -69,17 +69,17 @@ from cloudify_agent.shell.decorators import handle_failures
               envvar=env.CLOUDIFY_REST_PASSWORD)
 @click.option('--verify-manager-certificate',
               help='True to verify the manager\' SSl certificate, False '
-                   'otherwise. [env {0}]'.
-              format(env.CLOUDIFY_VERIFY_MANAGER_CERTIFICATE),
+                   'otherwise. [env {0}]'
+              .format(env.CLOUDIFY_VERIFY_MANAGER_CERTIFICATE),
               envvar=env.CLOUDIFY_VERIFY_MANAGER_CERTIFICATE)
-@click.option('--ssl-cert-file',
-              help='The path to the SSL public cert to use during for cert '
-                   'verification. Only used when ssl is enabled [env {0}]'
+@click.option('--local-rest-cert-file',
+              help='The path to a local copy of the REST public cert, used for'
+                   ' cert verification, if required [env {0}]'
               .format(env.CLOUDIFY_LOCAL_REST_CERT_FILE),
               default=None,
               type=click.Path(exists=True, readable=True, file_okay=True),
               envvar=env.CLOUDIFY_LOCAL_REST_CERT_FILE)
-@click.option('--ssl-cert-content',
+@click.option('--rest-cert-content',
               help='The string content of the REST SSL certificate [env {0}]'
               .format(env.CLOUDIFY_REST_CERT_CONTENT),
               default=None,

@@ -37,16 +37,16 @@ from cloudify_agent.shell.decorators import handle_failures
                     env.CLOUDIFY_INTERNAL_MANAGER_HOST),
               required=True,
               envvar=env.CLOUDIFY_INTERNAL_MANAGER_HOST)
-@click.option('--manager-rest-host',
+@click.option('--rest-host',
               help='The IP or host name of the REST service [env {0}]'
               .format(env.CLOUDIFY_REST_HOST),
               required=True,
               envvar=env.CLOUDIFY_REST_HOST)
-@click.option('--manager-rest-port',
+@click.option('--rest-port',
               help='The manager REST port to connect to. [env {0}]'
               .format(env.CLOUDIFY_REST_PORT),
               envvar=env.CLOUDIFY_REST_PORT)
-@click.option('--manager-rest-protocol',
+@click.option('--rest-protocol',
               help='The protocol to use when sending REST calls to the '
                    'manager. [env {0}]'.format(env.CLOUDIFY_REST_PROTOCOL),
               envvar=env.CLOUDIFY_REST_PROTOCOL)
@@ -197,13 +197,18 @@ def create(**params):
     Creates and stores the daemon parameters.
 
     """
-
+    with open('/tmp/daemons.log', 'a') as logfile:
+        logfile.write('starting daemons.create with params: {0}\n'.format(params))
     attributes = dict(**params)
+    with open('/tmp/daemons.log', 'a') as logfile:
+        logfile.write('updating attributes...\n')
     custom_arg = attributes.pop('custom_options', ())
     attributes.update(_parse_custom_options(custom_arg))
+    with open('/tmp/daemons.log', 'a') as logfile:
+        logfile.write('updated attributes: {0}\n'.format(attributes))
+
     click.echo('Creating...')
     from cloudify_agent.shell.main import get_logger
-
     if attributes['broker_get_settings_from_manager']:
         broker = api_utils.internal.get_broker_configuration(attributes)
         attributes.update(broker)

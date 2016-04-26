@@ -76,8 +76,11 @@ class NonSuckingServiceManagerDaemon(Daemon):
         self.failure_reset_timeout = params.get('failure_reset_timeout', 60)
         self.failure_restart_delay = params.get('failure_restart_delay', 5000)
 
-    def configure(self):
+    def create_script(self):
+        pass
 
+    def create_config(self):
+        super(NonSuckingServiceManagerDaemon, self).configure()
         env_string = self._create_env_string()
 
         # creating the installation script
@@ -119,8 +122,6 @@ class NonSuckingServiceManagerDaemon(Daemon):
         self._logger.info('Running configuration script')
         self._runner.run(self.config_path)
         self._logger.debug('Successfully executed configuration script')
-        self._deploy_ssl_certs()
-        self._create_celery_conf()
 
     def before_self_stop(self):
         if self.startup_policy in ['boot', 'system', 'auto']:

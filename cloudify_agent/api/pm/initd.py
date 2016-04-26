@@ -56,16 +56,7 @@ class GenericLinuxDaemon(CronRespawnDaemon):
                                                           self._runner)
 
     def configure(self):
-
-        self._logger.debug('Creating daemon script: {0}'
-                           .format(self.script_path))
-        self._create_script()
-        self._logger.debug('Creating daemon conf file: {0}'
-                           .format(self.config_path))
-        self._create_config()
-        self._deploy_ssl_certs()
-        self._create_celery_conf()
-
+        super(GenericLinuxDaemon, self).configure()
         if self.start_on_boot:
             self._logger.info('Creating start-on-boot entry')
             self._start_on_boot_handler.create()
@@ -111,7 +102,7 @@ class GenericLinuxDaemon(CronRespawnDaemon):
             self._logger.debug(str(e))
             return False
 
-    def _create_script(self):
+    def create_script(self):
         self._logger.debug('Rendering init.d script from template')
         rendered = utils.render_template_to_file(
             template_path='pm/initd/initd.template',
@@ -124,7 +115,7 @@ class GenericLinuxDaemon(CronRespawnDaemon):
         self._runner.run('sudo rm {0}'.format(rendered))
         self._runner.run('sudo chmod +x {0}'.format(self.script_path))
 
-    def _create_config(self):
+    def create_config(self):
         self._logger.debug('Rendering configuration script from template')
         rendered = utils.render_template_to_file(
             template_path='pm/initd/initd.conf.template',

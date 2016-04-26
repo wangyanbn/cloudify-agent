@@ -202,6 +202,9 @@ def create(**params):
         logfile.write('updated attributes: {0}\n'.format(attributes))
 
     click.echo('Creating...')
+    _create_rest_ssl_cert()
+    _create_broker_ssl_cert()
+
     from cloudify_agent.shell.main import get_logger
     if attributes['broker_get_settings_from_manager']:
         broker = api_utils.internal.get_broker_configuration(attributes)
@@ -426,3 +429,26 @@ def _parse_custom_options(options):
         parsed[key] = value
 
     return parsed
+
+
+def _create_rest_ssl_cert(self):
+    """
+    put the REST SSL cert into a file for clients to use,
+    if local_rest_cert_file is set.
+    """
+    self._logger.info('Deploying REST SSL cert (if defined).')
+    if self.local_rest_cert_file and self.local_rest_cert_content:
+        # TODO: Cert validation
+        with open(self.local_rest_cert_file(), 'w') as cert_handle:
+            cert_handle.write(self.local_rest_cert_content)
+
+
+def _create_broker_ssl_cert(self):
+    """
+    Put the broker SSL cert into a file for AMQP clients to use.
+    """
+    self._logger.info('Deploying broker SSL cert (if defined).')
+    if self.broker_ssl_cert:
+        # TODO: Cert validation
+        with open(self._get_broker_ssl_cert_path(), 'w') as cert_handle:
+            cert_handle.write(self.broker_ssl_cert)

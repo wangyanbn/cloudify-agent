@@ -303,7 +303,7 @@ class Daemon(object):
     def _get_celery_conf_path(self):
         return os.path.join(self.workdir, 'broker_config.json')
 
-    def _create_celery_conf(self):
+    def create_celery_conf(self):
         self._logger.info('Deploying celery configuration.')
         config = {
             'broker_ssl_enabled': self.broker_ssl_enabled,
@@ -351,17 +351,6 @@ class Daemon(object):
         else:
             return BROKER_PORT_NO_SSL
 
-    def _create_broker_ssl_cert(self):
-        """
-        Put the broker SSL cert into a file for AMQP clients to use.
-        """
-        # Cert will be deployed even if SSL is disabled, but configuration
-        # will cause it not to be used
-        if self.broker_ssl_cert:
-            # TODO: Cert validation
-            with open(self._get_broker_ssl_cert_path(), 'w') as cert_handle:
-                cert_handle.write(self.broker_ssl_cert)
-
     def _get_broker_ssl_cert_path(self):
         """
         Determine what path the broker SSL cert should reside in.
@@ -375,16 +364,6 @@ class Daemon(object):
         else:
             return ''
 
-    def _create_rest_ssl_cert(self):
-        """
-        put the REST SSL cert into a file for clients to use,
-        if local_rest_cert_file is set.
-        """
-        if self.local_rest_cert_file:
-            # TODO: Cert validation
-            with open(self.local_rest_cert_file(), 'w') as cert_handle:
-                cert_handle.write(self.local_rest_cert_content)
-
     def _is_agent_registered(self):
         celery_client = utils.get_celery_client(
             broker_url=self.broker_url,
@@ -397,29 +376,11 @@ class Daemon(object):
             if celery_client:
                 celery_client.close()
 
-    def _deploy_ssl_certs(self):
-        # create manager ssl cert
-        self._logger.info('Deploying REST SSL cert (if defined).')
-        self._create_rest_ssl_cert()
-        # create broker ssl cert
-        self._logger.info('Deploying SSL cert (if defined).')
-        self._create_broker_ssl_cert()
-
     ########################################################################
     # the following methods must be implemented by the sub-classes as they
     # may exhibit custom logic. usually this would be related to process
     # management specific configuration files.
     ########################################################################
-
-    def configure(self):
-
-        """
-        Creates any necessary resources for the daemon. After this method
-        was completed successfully, it should be possible to start the daemon
-        by running the command returned by the `start_command` method.
-
-        """
-        raise NotImplementedError('Must be implemented by a subclass')
 
     def delete(self, force=defaults.DAEMON_FORCE_DELETE):
 
@@ -463,6 +424,12 @@ class Daemon(object):
         """
         raise NotImplementedError('Must be implemented by a subclass')
 
+    def create_script(self):
+        raise NotImplementedError('Must be implemented by a subclass')
+
+    def create_config(self):
+        raise NotImplementedError('Must be implemented by a subclass')
+
     ########################################################################
     # the following methods is the common logic that would apply to any
     # process management implementation.
@@ -477,6 +444,22 @@ class Daemon(object):
 
         """
         self._logger.debug('Daemon created')
+
+    def configure(self):
+
+        """
+        Creates any necessary resources for the daemon. After this method
+        was completed successfully, it should be possible to start the daemon
+        by running the command returned by the `start_command` method.
+
+        """
+        self._logger.debug('Creating daemon script: {0}'
+                           .format(self.script_path))
+        self.create_script()
+        self._logger.debug('Creating daemon conf file: {0}'
+                           .format(self.config_path))
+        self.create_config()
+        self.create_celery_conf()
 
     def start(self,
               interval=defaults.START_INTERVAL,

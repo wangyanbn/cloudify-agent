@@ -191,7 +191,8 @@ def create(**params):
 
     """
     with open('/tmp/daemons.log', 'a') as logfile:
-        logfile.write('starting daemons.create with params: {0}\n'.format(params))
+        logfile.write('starting daemons.create with params: {0}\n'
+                      .format(params))
     attributes = dict(**params)
     with open('/tmp/daemons.log', 'a') as logfile:
         logfile.write('updating attributes...\n')

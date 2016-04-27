@@ -101,7 +101,7 @@ class NonSuckingServiceManagerDaemon(Daemon):
             manager_username=self.manager_username,
             manager_password=self.manager_password,
             verify_manager_certificate=self.verify_manager_certificate,
-            local_rest_cert_file=self.local_rest_cert_file,
+            local_rest_cert_file=self.local_rest_cert_path,
             rest_cert_content=self.rest_cert_content,
             broker_url=self.broker_url,
             min_workers=self.min_workers,

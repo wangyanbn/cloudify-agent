@@ -15,6 +15,8 @@
 
 import json
 import click
+import os
+import errno
 
 from cloudify_agent.api import defaults
 from cloudify_agent.api import utils as api_utils
@@ -71,12 +73,11 @@ from cloudify_agent.shell.decorators import handle_failures
               help='The path to a local copy of the REST public cert, used for'
                    ' cert verification, if required [env {0}]'
               .format(env.CLOUDIFY_LOCAL_REST_CERT_FILE),
-              type=click.Path(exists=True, readable=True, file_okay=True),
+              type=click.Path(exists=False, readable=False, file_okay=True),
               envvar=env.CLOUDIFY_LOCAL_REST_CERT_FILE)
 @click.option('--rest-cert-content',
               help='The string content of the REST SSL certificate [env {0}]'
               .format(env.CLOUDIFY_REST_CERT_CONTENT),
-              type=click.Path(exists=True, readable=True, file_okay=True),
               envvar=env.CLOUDIFY_REST_CERT_CONTENT)
 @click.option('--name',
               help='The name of the daemon. [env {0}]'
@@ -193,17 +194,22 @@ def create(**params):
     with open('/tmp/daemons.log', 'a') as logfile:
         logfile.write('starting daemons.create with params: {0}\n'
                       .format(params))
-    attributes = dict(**params)
-    with open('/tmp/daemons.log', 'a') as logfile:
+        attributes = dict(**params)
         logfile.write('updating attributes...\n')
-    custom_arg = attributes.pop('custom_options', ())
-    attributes.update(_parse_custom_options(custom_arg))
-    with open('/tmp/daemons.log', 'a') as logfile:
+        custom_arg = attributes.pop('custom_options', ())
+        attributes.update(_parse_custom_options(custom_arg))
         logfile.write('updated attributes: {0}\n'.format(attributes))
+        click.echo('Creating...')
+        logfile.write('calling _create_rest_ssl_cert\n')
 
-    click.echo('Creating...')
-    _create_rest_ssl_cert()
-    _create_broker_ssl_cert()
+    _create_rest_ssl_cert(attributes)
+    with open('/tmp/daemons.log', 'a') as logfile:
+        logfile.write('completed _create_rest_ssl_cert\n')
+        logfile.write('calling _create_broker_ssl_cert\n')
+
+    _create_broker_ssl_cert(attributes)
+    with open('/tmp/daemons.log', 'a') as logfile:
+        logfile.write('completed _create_broker_ssl_cert\n')
 
     from cloudify_agent.shell.main import get_logger
     if attributes['broker_get_settings_from_manager']:
@@ -431,24 +437,42 @@ def _parse_custom_options(options):
     return parsed
 
 
-def _create_rest_ssl_cert(self):
+def _safe_create_dir(path):
+    # creating a dir, ignoring exists error to handle possible race condition
+    try:
+        os.makedirs(path)
+    except OSError as ose:
+        if ose.errno != errno.EEXIST:
+            raise
+
+
+def _create_rest_ssl_cert(agent):
     """
     put the REST SSL cert into a file for clients to use,
-    if local_rest_cert_file is set.
+    if rest_cert_content is set.
     """
-    self._logger.info('Deploying REST SSL cert (if defined).')
-    if self.local_rest_cert_file and self.local_rest_cert_content:
+    click.echo('Deploying REST SSL certificate (if defined).')
+    rest_cert_content = agent['rest_cert_content']
+    if rest_cert_content:
+        local_rest_cert_path = os.path.join(agent['workdir'], 'rest.crt')
+        agent['local_rest_cert_path'] = local_rest_cert_path
         # TODO: Cert validation
-        with open(self.local_rest_cert_file(), 'w') as cert_handle:
-            cert_handle.write(self.local_rest_cert_content)
+        _safe_create_dir(os.path.dirname(local_rest_cert_path))
+        with open(local_rest_cert_path, 'w') as cert_handle:
+            cert_handle.write(rest_cert_content)
 
 
-def _create_broker_ssl_cert(self):
+def _create_broker_ssl_cert(agent):
     """
-    Put the broker SSL cert into a file for AMQP clients to use.
+    Put the broker SSL cert into a file for AMQP clients to use,
+    if broker_ssl_cert is set.
     """
-    self._logger.info('Deploying broker SSL cert (if defined).')
-    if self.broker_ssl_cert:
+    click.echo('Deploying broker SSL certificate (if defined).')
+    broker_ssl_cert_content = agent['broker_ssl_cert']
+    if broker_ssl_cert_content:
+        broker_ssl_cert_path = os.path.join(agent['workdir'], 'broker.crt')
+        agent['broker_ssl_cert_path'] = broker_ssl_cert_path
         # TODO: Cert validation
-        with open(self._get_broker_ssl_cert_path(), 'w') as cert_handle:
-            cert_handle.write(self.broker_ssl_cert)
+        _safe_create_dir(os.path.dirname(broker_ssl_cert_path))
+        with open(broker_ssl_cert_path, 'w') as cert_handle:
+            cert_handle.write(broker_ssl_cert_content)

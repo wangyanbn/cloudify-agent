@@ -176,10 +176,10 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
         cloudify_agent['rest_host'] = \
             cloudify_utils.get_manager_rest_service_host()
 
-    if not cloudify_agent.get('local_rest_cert_file'):
-        # by default, local_rest_cert_file is set by an environment variable
-        cloudify_agent['local_rest_cert_file'] = \
-            cloudify_utils.get_local_rest_certificate()
+    # if not cloudify_agent.get('local_rest_cert_file'):
+    #     # by default, local_rest_cert_file is set by an environment variable
+    #     cloudify_agent['local_rest_cert_file'] = \
+    #         cloudify_utils.get_local_rest_certificate()
 
     if not cloudify_agent.get('rest_cert_content'):
         # by default, rest_cert_content is set by an environment variable

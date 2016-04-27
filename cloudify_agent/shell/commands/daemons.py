@@ -16,7 +16,6 @@
 import json
 import click
 import os
-import errno
 
 from cloudify_agent.api import defaults
 from cloudify_agent.api import utils as api_utils
@@ -437,15 +436,6 @@ def _parse_custom_options(options):
     return parsed
 
 
-def _safe_create_dir(path):
-    # creating a dir, ignoring exists error to handle possible race condition
-    try:
-        os.makedirs(path)
-    except OSError as ose:
-        if ose.errno != errno.EEXIST:
-            raise
-
-
 def _create_rest_ssl_cert(agent):
     """
     put the REST SSL cert into a file for clients to use,
@@ -457,9 +447,9 @@ def _create_rest_ssl_cert(agent):
         local_rest_cert_path = os.path.join(agent['workdir'], 'rest.crt')
         agent['local_rest_cert_path'] = local_rest_cert_path
         # TODO: Cert validation
-        _safe_create_dir(os.path.dirname(local_rest_cert_path))
-        with open(local_rest_cert_path, 'w') as cert_handle:
-            cert_handle.write(rest_cert_content)
+        api_utils.write_encoded_file(file_content=rest_cert_content,
+                                     destination=local_rest_cert_path,
+                                     encoding='utf-8')
 
 
 def _create_broker_ssl_cert(agent):
@@ -473,6 +463,6 @@ def _create_broker_ssl_cert(agent):
         broker_ssl_cert_path = os.path.join(agent['workdir'], 'broker.crt')
         agent['broker_ssl_cert_path'] = broker_ssl_cert_path
         # TODO: Cert validation
-        _safe_create_dir(os.path.dirname(broker_ssl_cert_path))
-        with open(broker_ssl_cert_path, 'w') as cert_handle:
-            cert_handle.write(broker_ssl_cert_content)
+        api_utils.write_encoded_file(file_content=broker_ssl_cert_content,
+                                     destination=broker_ssl_cert_path,
+                                     encoding='utf-8')

@@ -18,6 +18,8 @@ import json
 import copy
 import tempfile
 import os
+import errno
+import codecs
 import getpass
 import pkg_resources
 from jinja2 import Template
@@ -521,6 +523,22 @@ def json_loads(content):
         return json.loads(content)
     except ValueError as e:
         raise ValueError('{0}:{1}{2}'.format(str(e), os.linesep, content))
+
+
+def _safe_create_dir(path):
+    # creating a dir, ignoring exists error to handle possible race condition
+    try:
+        os.makedirs(path)
+    except OSError as ose:
+        if ose.errno != errno.EEXIST:
+            raise
+
+
+def write_encoded_file(file_content, destination, encoding):
+    _safe_create_dir(os.path.dirname(destination))
+    out_file = codecs.open(destination, 'w', encoding)
+    out_file.write(file_content)
+    out_file.close()
 
 
 def get_rest_client(security_enabled,

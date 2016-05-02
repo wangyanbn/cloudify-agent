@@ -446,6 +446,10 @@ def _create_rest_ssl_cert(agent):
     if rest_cert_content:
         local_rest_cert_path = os.path.join(agent['workdir'], 'rest.crt')
         agent['local_rest_cert_path'] = local_rest_cert_path
+        rest_cert_content = rest_cert_content.replace("\\n", "\n")
+        import json
+        with open('/tmp/dumped.log', 'a') as dumped:
+            dumped.write(json.dumps(agent))
         # TODO: Cert validation
         api_utils.write_encoded_file(file_content=rest_cert_content,
                                      destination=local_rest_cert_path,

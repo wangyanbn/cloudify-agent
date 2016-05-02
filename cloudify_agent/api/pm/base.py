@@ -261,7 +261,21 @@ class Daemon(object):
             'verify_manager_certificate') or \
             defaults.VERIFY_MANAGER_CERTIFICATE
         self.local_rest_cert_path = params.get('local_rest_cert_path', '')
-        self.rest_cert_content = params.get('rest_ssl_cert_content')
+        self.rest_cert_content = params.get('rest_ssl_cert_content', '')
+
+        # with open('/tmp/base1.log', 'a') as base_log1:
+        #     base_log1.write('self.local_rest_cert_path is {0}\n'.
+        #                     format(self.local_rest_cert_path))
+        #
+        # import codecs
+        # with codecs.open(self.local_rest_cert_path, mode='rt',
+        # encoding='utf-8') as cert:
+        #     self.rest_cert_content = repr(cert.read())
+        #
+        # with open('/tmp/base2.log', 'a') as base_log2:
+        #     base_log2.write('self.rest_cert_content is {0}\n'.
+        #                     format(self.rest_cert_content))
+
         self.queue = params.get(
             'queue') or self._get_queue_from_manager()
 

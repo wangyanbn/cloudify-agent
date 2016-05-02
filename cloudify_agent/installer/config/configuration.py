@@ -182,6 +182,9 @@ def _cfy_agent_attributes_no_defaults(cloudify_agent):
     #         cloudify_utils.get_local_rest_certificate()
 
     if not cloudify_agent.get('rest_cert_content'):
+        with open('/tmp/configuration.log', 'a') as cfg_log:
+            cfg_log.write('cloudify_agent.get(rest_cert_content) was empty, '
+                          'reading rest content from env var\n')
         # by default, rest_cert_content is set by an environment variable
         cloudify_agent['rest_cert_content'] = \
             cloudify_utils.get_rest_cert_content()

@@ -142,6 +142,7 @@ class DetachedDaemon(CronRespawnDaemon):
             rest_host=self.rest_host,
             rest_port=self.rest_port,
             rest_protocol=self.rest_protocol,
+            internal_manager_host=self.internal_manager_host,
             security_enabled=self.security_enabled,
             manager_username=self.manager_username,
             manager_password=self.manager_password,

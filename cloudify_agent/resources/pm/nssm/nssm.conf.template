@@ -35,6 +35,7 @@ LOCAL_REST_CERT_FILE={{ local_rest_cert_file }} ^
 REST_CERT_CONTENT={{ rest_cert_content }} ^
 MANAGER_FILE_SERVER_URL=http://{{ internal_manager_host }}:53229 ^
 MANAGER_FILE_SERVER_BLUEPRINTS_ROOT_URL=http://{{ internal_manager_host }}:53229/blueprints ^
+MANAGER_FILE_SERVER_DEPLOYMENTS_ROOT_URL=http://{{ internal_manager_host }}:53229/deployments ^
 CLOUDIFY_DAEMON_NAME={{ name }} ^
 CLOUDIFY_DAEMON_STORAGE_DIRECTORY={{ storage_dir }} ^
 CLOUDIFY_DAEMON_USER={{ user }} ^

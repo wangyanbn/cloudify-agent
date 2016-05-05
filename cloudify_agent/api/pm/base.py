@@ -103,7 +103,7 @@ class Daemon(object):
 
     ``file_server_host``:
 
-        the IP or hostname of the file server exposed to internal components (Required)
+        the IP or hostname of the file server (Required)
 
     ``rest_host``:
 

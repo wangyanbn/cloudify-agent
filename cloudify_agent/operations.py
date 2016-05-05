@@ -106,6 +106,10 @@ def restart(new_name=None, delay_period=5, **_):
     del attributes['pid_file']
 
     # Get the broker credentials for the daemon
+    with open('/tmp/broker.log', 'a') as broker_log:
+        broker_log.write('***** operations.restart: '
+                         'ctx.bootstrap_context.broker_config(): {0}'.
+                         format(ctx.bootstrap_context.broker_config()))
     attributes.update(ctx.bootstrap_context.broker_config())
 
     new_daemon = DaemonFactory().new(logger=ctx.logger, **attributes)
@@ -178,9 +182,18 @@ def _celery_client(ctx, agent):
     # cases when old agent is not connected to current rabbit server.
     if 'broker_config' in agent:
         broker_config = agent['broker_config']
+        with open('/tmp/broker.log', 'a') as broker_log:
+            broker_log.write('***** _celery_client: broker_config from '
+                             'agent: {0}'.format(broker_config))
     else:
         broker_config = ctx.bootstrap_context.broker_config()
+        with open('/tmp/broker.log', 'a') as broker_log:
+            broker_log.write('***** _celery_client: broker_config from '
+                             'bootstrap_context: {0}'.format(broker_config))
     broker_url = utils.internal.get_broker_url(broker_config)
+    with open('/tmp/broker.log', 'a') as broker_log:
+        broker_log.write('***** _celery_client: broker_url: {0}'.
+                         format(broker_url))
     ctx.logger.info('Connecting to {0}'.format(broker_url))
     celery_client = celery.Celery()
     # We can't pass broker_url to Celery constructor because it would
@@ -206,6 +219,9 @@ def _celery_client(ctx, agent):
             broker_ssl = False
         config['BROKER_USE_SSL'] = broker_ssl
         celery_client.conf.update(**config)
+        with open('/tmp/broker.log', 'a') as broker_log:
+            broker_log.write('***** _celery_client: returning celery_client: '
+                             '{0}'.format(celery_client))
         yield celery_client
     finally:
         os.remove(cert_path)

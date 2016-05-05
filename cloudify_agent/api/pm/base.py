@@ -246,6 +246,19 @@ class Daemon(object):
         self.broker_port = self._get_broker_port()
         self.broker_user = params.get('broker_user', 'guest')
         self.broker_pass = params.get('broker_pass', 'guest')
+
+        with open('/tmp/broker_in_base_py.log', 'a') as broker_base:
+            broker_base.write('***** params.get(broker_host): {0}\n'.
+                              format(params.get('broker_host')))
+            broker_base.write('***** params.get(broker_ssl_enabled): {0}\n'.
+                              format(params.get('broker_ssl_enabled')))
+            broker_base.write('***** params.get(broker_port): {0}\n'.
+                              format(params.get('broker_port')))
+            broker_base.write('***** params.get(broker_user): {0}\n'.
+                              format(params.get('broker_user')))
+            broker_base.write('***** params.get(broker_pass): {0}\n'.
+                              format(params.get('broker_pass')))
+
         self.host = params.get('host')
         self.deployment_id = params.get('deployment_id')
         self.rest_port = params.get(

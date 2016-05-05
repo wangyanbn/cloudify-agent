@@ -163,8 +163,8 @@ class _Internal(object):
 
     @staticmethod
     def get_broker_configuration(agent):
-        with open('/tmp/agent_utils1.log', 'a') as agent_log1:
-            agent_log1.write('creating rest client with agent: {0}\n'.
+        with open('/tmp/broker.log', 'a') as broker_log:
+            broker_log.write('getting broker configuration for agent: {0}\n'.
                              format(agent))
 
         client = get_rest_client(
@@ -181,6 +181,9 @@ class _Internal(object):
         bootstrap_context_dict = bootstrap_context_dict['context']['cloudify']
         bootstrap_context = BootstrapContext(bootstrap_context_dict)
         attributes = bootstrap_context.broker_config()
+        with open('/tmp/broker.log', 'a') as broker_log:
+            broker_log.write('got broker configuration: {0}\n'.
+                             format(attributes))
         return attributes
 
     @staticmethod

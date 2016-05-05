@@ -159,6 +159,15 @@ class AgentInstaller(object):
 
     def _create_agent_env(self):
 
+        with open('/tmp/broker_in_installer.log', 'a') as brolog:
+            brolog.write('***** setting env broker host to: {0}\n'.
+                         format(self.cloudify_agent.get('broker_host')))
+            brolog.write('***** setting env broker port to: {0}\n'.
+                         format(self.cloudify_agent.get('broker_port')))
+            brolog.write('***** setting env broker_get_settings_from_manager'
+                         ' to: {0}\n'.
+                         format(self.broker_get_settings_from_manager))
+
         execution_env = {
 
             # mandatory values calculated before the agent

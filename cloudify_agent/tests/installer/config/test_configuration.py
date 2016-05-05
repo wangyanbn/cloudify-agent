@@ -32,12 +32,12 @@ class TestConfiguration(BaseTest):
         super(TestConfiguration, self).setUp()
         os.environ[constants.MANAGER_FILE_SERVER_URL_KEY] = 'localhost'
         os.environ[constants.REST_HOST_KEY] = 'localhost'
-        os.environ[constants.INTERNAL_MANAGER_HOST_KEY] = 'localhost'
+        os.environ[constants.FILE_SERVER_HOST_KEY] = 'localhost'
 
     def tearDown(self):
         del os.environ[constants.MANAGER_FILE_SERVER_URL_KEY]
         del os.environ[constants.REST_HOST_KEY]
-        del os.environ[constants.INTERNAL_MANAGER_HOST_KEY]
+        del os.environ[constants.FILE_SERVER_HOST_KEY]
 
     @patch('cloudify_agent.installer.config.configuration.ctx',
            mock_context())

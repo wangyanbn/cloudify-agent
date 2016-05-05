@@ -32,12 +32,11 @@ from cloudify_agent.shell.decorators import handle_failures
               type=click.Choice(['init.d', 'nssm', 'detach']),
               required=True,
               envvar=env.CLOUDIFY_DAEMON_PROCESS_MANAGEMENT)
-@click.option('--internal-manager-host',
-              help='The IP or host name of the manager, for file server and '
-                   'broker redundancy [env {0}]'.format(
-                    env.CLOUDIFY_INTERNAL_MANAGER_HOST),
+@click.option('--file_server_host',
+              help='The IP or host name of the file server [env {0}]'
+              .format(env.CLOUDIFY_FILE_SERVER_HOST),
               required=True,
-              envvar=env.CLOUDIFY_INTERNAL_MANAGER_HOST)
+              envvar=env.CLOUDIFY_FILE_SERVER_HOST)
 @click.option('--rest-host',
               help='The IP or host name of the REST service [env {0}]'
               .format(env.CLOUDIFY_REST_HOST),
@@ -103,12 +102,10 @@ from cloudify_agent.shell.decorators import handle_failures
                    'Defaults to current working directory. [env {0}]'
                    .format(env.CLOUDIFY_DAEMON_WORKDIR),
               envvar=env.CLOUDIFY_DAEMON_WORKDIR)
-@click.option('--broker-ip',
-              help='The broker ip to connect to. '
-                   'If not specified, the --internal_manager_host '
-                   'option will be used. [{0}]'
-                   .format(env.CLOUDIFY_BROKER_IP),
-              envvar=env.CLOUDIFY_BROKER_IP)
+@click.option('--broker-host',
+              help='The broker host name or ip to connect to. [env {0}]'
+                   .format(env.CLOUDIFY_BROKER_HOST),
+              envvar=env.CLOUDIFY_BROKER_HOST)
 @click.option('--broker-port',
               help='The broker port to connect to. If not set, this will be '
                    'determined based on whether SSL is enabled. It will be '

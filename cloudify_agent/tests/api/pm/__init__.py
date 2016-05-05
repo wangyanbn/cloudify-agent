@@ -321,14 +321,14 @@ class BaseDaemonProcessManagementTest(BaseDaemonLiveTestCase):
         daemon.start()
 
         expected = {
-            constants.INTERNAL_MANAGER_HOST_KEY: str(daemon.manager),
             constants.REST_HOST_KEY: str(daemon.rest_host),
             constants.REST_PORT_KEY: str(daemon.rest_port),
+            constants.FILE_SERVER_HOST_KEY: str(daemon.file_server_host),
             constants.MANAGER_FILE_SERVER_URL_KEY:
-                'http://{0}:53229'.format(daemon.internal_manager_host),
+                'http://{0}:53229'.format(daemon.file_server_host),
             constants.MANAGER_FILE_SERVER_BLUEPRINTS_ROOT_URL_KEY:
                 'http://{0}:53229/blueprints'.format(
-                    daemon.internal_manager_host),
+                    daemon.file_server_host),
             constants.CELERY_WORK_DIR_KEY: daemon.workdir,
             utils.internal.CLOUDIFY_DAEMON_STORAGE_DIRECTORY_KEY:
                 utils.internal.get_storage_directory(),

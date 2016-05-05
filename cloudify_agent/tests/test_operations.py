@@ -171,7 +171,7 @@ class TestCreateAgentAmqp(BaseTest):
                            'ubuntu-trusty-agent.tar.gz',
             'version': '3.4',
             'broker_config': {
-                'broker_ip': '10.0.4.46',
+                'broker_host': '10.0.4.46',
                 'broker_pass': 'test_pass',
                 'broker_user': 'test_user',
                 'broker_port': '5672',

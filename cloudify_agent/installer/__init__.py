@@ -163,15 +163,15 @@ class AgentInstaller(object):
 
             # mandatory values calculated before the agent
             # is actually created
-            env.CLOUDIFY_INTERNAL_HOST:
-                self.cloudify_agent['internal_manager_host'],
+            env.CLOUDIFY_FILE_SERVER_HOST:
+                self.cloudify_agent['file_server_host'],
             env.CLOUDIFY_DAEMON_QUEUE: self.cloudify_agent['queue'],
             env.CLOUDIFY_DAEMON_NAME: self.cloudify_agent['name'],
 
             # these are variables that have default values that will be set
             # by the agent on the remote host if not set here
             env.CLOUDIFY_DAEMON_USER: self.cloudify_agent.get('user'),
-            env.CLOUDIFY_BROKER_IP: self.cloudify_agent.get('broker_ip'),
+            env.CLOUDIFY_BROKER_HOST: self.cloudify_agent.get('broker_host'),
             env.CLOUDIFY_BROKER_PORT: self.cloudify_agent.get('broker_port'),
             env.CLOUDIFY_REST_PORT:
                 self.cloudify_agent.get('rest_port'),

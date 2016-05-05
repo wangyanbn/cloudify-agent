@@ -180,24 +180,18 @@ class _Internal(object):
         bootstrap_context_dict = client.manager.get_context()
         bootstrap_context_dict = bootstrap_context_dict['context']['cloudify']
         bootstrap_context = BootstrapContext(bootstrap_context_dict)
-        attributes = bootstrap_context.broker_config(
-            fallback_to_internal_manager_host=False)
-        if not attributes.get('broker_ip'):
-            attributes['broker_ip'] = agent['internal_manager_host']
+        attributes = bootstrap_context.broker_config()
         return attributes
 
     @staticmethod
     def get_broker_url(agent):
+        broker_host = agent['broker_host']
         broker_port = agent.get('broker_port', defaults.BROKER_PORT)
-        if agent.get('broker_ip'):
-            broker_ip = agent['broker_ip']
-        else:
-            broker_ip = agent['internal_manager_host']
         broker_user = agent.get('broker_user', 'guest')
         broker_pass = agent.get('broker_pass', 'guest')
         return defaults.BROKER_URL.format(username=broker_user,
                                           password=broker_pass,
-                                          host=broker_ip,
+                                          host=broker_host,
                                           port=broker_port)
 
 

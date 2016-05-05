@@ -66,6 +66,7 @@ class TestConfiguration(BaseTest):
             'rest_host': 'localhost',
             'rest_port': 80,
             'rest_protocol': 'http',
+            'file_server_host': 'localhost',
             'queue': 'test_deployment',
             'envdir': envdir,
             'user': user,

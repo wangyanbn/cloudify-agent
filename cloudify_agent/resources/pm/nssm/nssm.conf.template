@@ -26,6 +26,7 @@ echo Setting service environment
 REST_HOST={{ rest_host }} ^
 REST_PORT={{ rest_port }} ^
 REST_PROTOCOL={{ rest_protocol }} ^
+FILE_SERVER_HOST={{ file_server_host }} ^
 MANAGER_SECURITY_ENABLED={{ security_enabled }} ^
 CLOUDIFY_USERNAME={{ manager_username }} ^
 CLOUDIFY_PASSWORD={{ manager_password }} ^

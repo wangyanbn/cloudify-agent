@@ -77,7 +77,7 @@ class Daemon(object):
         working directory for runtime files (pid, log).
         defaults to the current working directory.
 
-    ``broker_host``:
+    ``broker_ip``:
 
         the host name or ip address of the broker to connect to.
 
@@ -237,7 +237,7 @@ class Daemon(object):
         self.name = params.get(
             'name') or self._get_name_from_manager()
         self.user = params.get('user') or getpass.getuser()
-        self.broker_host = params.get('broker_host')
+        self.broker_ip = params.get('broker_ip')
         self.broker_ssl_enabled = params.get('broker_ssl_enabled', False)
         self.broker_ssl_cert_content = params.get('broker_ssl_cert', '')
         self.broker_ssl_cert_path = params.get('broker_ssl_cert_path', '')
@@ -248,8 +248,8 @@ class Daemon(object):
         self.broker_pass = params.get('broker_pass', 'guest')
 
         with open('/tmp/broker_in_base_py.log', 'a') as broker_base:
-            broker_base.write('***** params.get(broker_host): {0}\n'.
-                              format(params.get('broker_host')))
+            broker_base.write('***** params.get(broker_ip): {0}\n'.
+                              format(params.get('broker_ip')))
             broker_base.write('***** params.get(broker_ssl_enabled): {0}\n'.
                               format(params.get('broker_ssl_enabled')))
             broker_base.write('***** params.get(broker_port): {0}\n'.
@@ -296,7 +296,7 @@ class Daemon(object):
         # These components need to be known for the _delete_amqp_queues
         # function.
         self.broker_url = defaults.BROKER_URL.format(
-            host=self.broker_host,
+            host=self.broker_ip,
             port=self.broker_port,
             username=self.broker_user,
             password=self.broker_pass,
@@ -336,7 +336,7 @@ class Daemon(object):
             'broker_cert_path': self.broker_ssl_cert_path,
             'broker_username': self.broker_user,
             'broker_password': self.broker_pass,
-            'broker_hostname': self.broker_host,
+            'broker_hostname': self.broker_ip,
         }
         with open(self._get_celery_conf_path(), 'w') as conf_handle:
             json.dump(config, conf_handle)
@@ -651,7 +651,7 @@ class Daemon(object):
 
     def _delete_amqp_queues(self):
         client = amqp_client.create_client(
-            amqp_host=self.broker_host,
+            amqp_host=self.broker_ip,
             amqp_user=self.broker_user,
             amqp_pass=self.broker_pass,
             ssl_enabled=self.broker_ssl_enabled,

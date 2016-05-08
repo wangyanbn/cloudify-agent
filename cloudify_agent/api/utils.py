@@ -188,13 +188,13 @@ class _Internal(object):
 
     @staticmethod
     def get_broker_url(agent):
-        broker_host = agent['broker_host']
+        broker_ip = agent['broker_ip']
         broker_port = agent.get('broker_port', defaults.BROKER_PORT)
         broker_user = agent.get('broker_user', 'guest')
         broker_pass = agent.get('broker_pass', 'guest')
         return defaults.BROKER_URL.format(username=broker_user,
                                           password=broker_pass,
-                                          host=broker_host,
+                                          host=broker_ip,
                                           port=broker_port)
 
 

@@ -102,10 +102,10 @@ from cloudify_agent.shell.decorators import handle_failures
                    'Defaults to current working directory. [env {0}]'
                    .format(env.CLOUDIFY_DAEMON_WORKDIR),
               envvar=env.CLOUDIFY_DAEMON_WORKDIR)
-@click.option('--broker-host',
+@click.option('--broker-ip',
               help='The broker host name or ip to connect to. [env {0}]'
-                   .format(env.CLOUDIFY_BROKER_HOST),
-              envvar=env.CLOUDIFY_BROKER_HOST)
+                   .format(env.CLOUDIFY_BROKER_IP),
+              envvar=env.CLOUDIFY_BROKER_IP)
 @click.option('--broker-port',
               help='The broker port to connect to. If not set, this will be '
                    'determined based on whether SSL is enabled. It will be '
